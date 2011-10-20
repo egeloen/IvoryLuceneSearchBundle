@@ -142,7 +142,7 @@ $document->addField(Field::keyword('field1', 'Keyword'));
 $document->addField(Field::text('field2', 'Some text'));
 
 // Add your document to the index
-$index->addDocument();
+$index->addDocument($document);
 
 // Commit your change
 $index->commit();
@@ -179,7 +179,7 @@ You can request much more precisly your index like describes in the zend documen
 Warning, if you try to render a document in a twig template, an exception will be throwed. 
 The zend framework uses the magic method __get to access field value. 
 Twig checks if a property exists before rendering it (it's a good thing :) ) but the zend framework doesn't implement the associated __isset method. So, Twig thinks the property doesn't exist.
-I have coded a [patch](https://github.com/zendframework/zend/pull/511) which is not merged yet. A patched version of zend framework is available at : http://github.com/egeloen/zf2
+I have coded a [patch](http://github.com/zendframework/zf2/pull/511) which is not merged yet. A patched version of zend framework is available at : http://github.com/egeloen/zf2
 
 Previous : [Installation](http://github.com/egeloen/IvoryLuceneSearchBundle/blob/master/Resources/doc/installation.md)
 Next : [Test](http://github.com/egeloen/IvoryLuceneSearchBundle/blob/master/Resources/doc/test.md)
