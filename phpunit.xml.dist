@@ -2,7 +2,7 @@
 <phpunit bootstrap="./Tests/bootstrap.php">
     <php>
         <!-- <server name="SYMFONY" value="/path/to/vendor/symfony/src" /> -->
-        <!-- <server name="ZEND" value="/path/to/vendor/zf2/library" /> -->
+        <!-- <server name="ZEND" value="/path/to/vendor/zend/library" /> -->
     </php>
     <testsuites>
         <testsuite name="IvoryLuceneSearchBundle Test Suite">
