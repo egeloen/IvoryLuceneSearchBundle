@@ -34,7 +34,7 @@ class Configuration implements ConfigurationInterface
     protected function addIndexesSection(ArrayNodeDefinition $node)
     {
         $node
-            ->useAttributeAsKey('indexes')->prototype('array')
+            ->useAttributeAsKey('ivory_lucene_search')->prototype('array')
                 ->children()
                     ->scalarNode('path')->isRequired()->end()
                     ->scalarNode('analyzer')->defaultValue('Zend\Search\Lucene\Analysis\Analyzer\Common\Text\CaseInsensitive')->end()
