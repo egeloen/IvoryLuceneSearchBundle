@@ -185,7 +185,10 @@ class LuceneManager
      */
     public function removeIndex($identifier, $removeDirectory = false)
     {
-        $this->removePath($identifier, $removeDirectory);
+        if($removeDirectory)
+            $this->eraseIndex($identifier);
+        
+        $this->removePath($identifier);
         $this->removeAnalyzer($identifier);
         $this->removeMaxBufferedDocs($identifier);
         $this->removeMaxMergeDocs($identifier);
@@ -195,6 +198,19 @@ class LuceneManager
         
         if(isset($this->indexes[$identifier]))
             unset($this->indexes[$identifier]);
+    }
+    
+    /**
+     * Erase an index
+     *
+     * @param string $identifier Index identifier
+     */
+    public function eraseIndex($identifier)
+    {
+        if($this->hasPath($identifier) && file_exists($this->getPath($identifier)))
+            Util::removeDirectoryRecursilvy($this->getPath($identifier));
+        else
+            throw new \InvalidArgumentException(sprintf('The lucene index path "%s" does not exist.', $identifier));
     }
     
     /**
@@ -241,23 +257,12 @@ class LuceneManager
     /**
      * Removes a path
      *
-     * @param string $identifier 
-     * @param boolean $removeDirectory
+     * @param string $identifier
      */
-    protected function removePath($identifier, $removeDirectory = false)
+    protected function removePath($identifier)
     {
         if($this->hasPath($identifier))
-        {
-            if(is_bool($removeDirectory))
-            {
-                if($removeDirectory && file_exists($this->getPath($identifier)))
-                    Util::removeDirectoryRecursilvy($this->getPath($identifier));
-
-                unset($this->paths[$identifier]);
-            }
-            else
-                throw new \InvalidArgumentException('The remove directory flag must be a boolean value.');
-        }
+            unset($this->paths[$identifier]);
         else
             throw new \InvalidArgumentException(sprintf('The lucene index path "%s" does not exist.', $identifier));
     }

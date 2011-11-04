@@ -115,6 +115,14 @@ So if you request an index, add your datas, update the configuration & request a
 $luceneSearch->removeIndex('identifier1');
 ```
 
+## Erase an index
+
+``` php
+<?php
+
+$luceneSearch->eraseIndex('identifier1');
+```
+
 ## Unregister & erase an index
 
 ``` php

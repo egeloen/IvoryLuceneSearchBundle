@@ -134,9 +134,6 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
         
         if(file_exists($pathTest))
             Util::removeDirectoryRecursilvy($pathTest);
-        
-        $this->setExpectedException('InvalidArgumentException');
-        self::$luceneManager->getIndex('foo');
     }
     
     /**
@@ -158,8 +155,22 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
         self::$luceneManager->getIndex('identifier');
         self::$luceneManager->removeIndex('identifier', true);
         $this->assertFalse(file_exists($pathTest));
+    }
+    
+    /**
+     * Checks the index erase method
+     */
+    public function testEraseIndex()
+    {
+        $pathTest = __DIR__.'/../directory_test';
         
-        $this->setExpectedException('InvalidArgumentException');
-        self::$luceneManager->getIndex('foo');
+        if(file_exists($pathTest))
+            Util::removeDirectoryRecursilvy($pathTest);
+        
+        self::$luceneManager->addIndex('identifier', $pathTest);
+        self::$luceneManager->getIndex('identifier');
+        $this->assertTrue(file_exists($pathTest));
+        self::$luceneManager->eraseIndex('identifier');
+        $this->assertFalse(file_exists($pathTest));
     }
 }
