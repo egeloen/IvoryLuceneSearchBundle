@@ -207,8 +207,11 @@ class LuceneManager
      */
     public function eraseIndex($identifier)
     {
-        if($this->hasPath($identifier) && file_exists($this->getPath($identifier)))
-            Util::removeDirectoryRecursilvy($this->getPath($identifier));
+        if($this->hasPath($identifier))
+        {
+            if(file_exists($this->getPath($identifier)))
+                Util::removeDirectoryRecursilvy($this->getPath($identifier));
+        }
         else
             throw new \InvalidArgumentException(sprintf('The lucene index path "%s" does not exist.', $identifier));
     }
