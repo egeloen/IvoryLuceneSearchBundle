@@ -170,7 +170,10 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
         self::$luceneManager->addIndex('identifier', $pathTest);
         self::$luceneManager->getIndex('identifier');
         $this->assertTrue(file_exists($pathTest));
+        
         self::$luceneManager->eraseIndex('identifier');
         $this->assertFalse(file_exists($pathTest));
+        
+        self::$luceneManager->getIndex('identifier');
     }
 }
