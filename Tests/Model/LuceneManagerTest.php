@@ -3,7 +3,7 @@
 namespace Ivory\LuceneSearchBundle\Tests\Model;
 
 use Ivory\LuceneSearchBundle\Model\LuceneManager;
-use Ivory\LuceneSearchBundle\Model\Util;
+use Symfony\Component\HttpKernel\Util\Filesystem;
 
 /**
  * Lucene manager test
@@ -46,15 +46,14 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
     {
         $pathTest = __DIR__.'/../directory_test';
         
-        if(file_exists($pathTest))
-            Util::removeDirectoryRecursilvy($pathTest);
+        $filesystem = new Filesystem();
+        $filesystem->remove($pathTest);
         
         self::$luceneManager->addIndex('identifier', $pathTest);
         $this->assertInstanceOf('Zend\Search\Lucene\Index', self::$luceneManager->getIndex('identifier'));
         $this->assertTrue(file_exists($pathTest));
         
-        if(file_exists($pathTest))
-            Util::removeDirectoryRecursilvy($pathTest);
+        $filesystem->remove($pathTest);
         
         $this->setExpectedException('InvalidArgumentException');
         self::$luceneManager->getIndex('foo');
@@ -67,11 +66,9 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
     {
         $pathTests = array(__DIR__.'/../directory_test1', __DIR__.'/../directory_test2');
         
+        $filesytem = new Filesystem();
         foreach($pathTests as $pathTest)
-        {
-            if(file_exists($pathTest))
-                Util::removeDirectoryRecursilvy($pathTest);
-        }
+            $filesytem->remove($pathTest);
         
         self::$luceneManager->setIndexes(array(
             'identifier1' => array(
@@ -103,10 +100,7 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(\Zend\Search\Lucene\Storage\Directory\Filesystem::getDefaultFilePermissions(), 0777);
         
         foreach($pathTests as $pathTest)
-        {
-            if(file_exists($pathTest))
-                Util::removeDirectoryRecursilvy($pathTest);
-        }
+            $filesytem->remove($pathTest);
         
         $this->setExpectedException('InvalidArgumentException');
         self::$luceneManager->setIndexes(array(
@@ -121,8 +115,8 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
     {
         $pathTest = __DIR__.'/../directory_test';
         
-        if(file_exists($pathTest))
-            Util::removeDirectoryRecursilvy($pathTest);
+        $filesystem = new Filesystem();
+        $filesystem->remove($pathTest);
         
         self::$luceneManager->addIndex('identifier', $pathTest, 'Zend\Search\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive', 100, 1000000, 5, 0666);
         self::$luceneManager->getIndex('identifier');
@@ -132,8 +126,7 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(self::$luceneManager->getIndex('identifier')->getMergeFactor(), 5);
         $this->assertEquals(\Zend\Search\Lucene\Storage\Directory\Filesystem::getDefaultFilePermissions(), 0666);
         
-        if(file_exists($pathTest))
-            Util::removeDirectoryRecursilvy($pathTest);
+        $filesystem->remove($pathTest);
     }
     
     /**
@@ -143,8 +136,8 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
     {   
         $pathTest = __DIR__.'/../directory_test';
         
-        if(file_exists($pathTest))
-            Util::removeDirectoryRecursilvy($pathTest);
+        $filesystem = new Filesystem();
+        $filesystem->remove($pathTest);
         
         self::$luceneManager->addIndex('identifier', $pathTest);
         self::$luceneManager->getIndex('identifier');
@@ -164,8 +157,8 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
     {
         $pathTest = __DIR__.'/../directory_test';
         
-        if(file_exists($pathTest))
-            Util::removeDirectoryRecursilvy($pathTest);
+        $filesystem = new Filesystem();
+        $filesystem->remove($pathTest);
         
         self::$luceneManager->addIndex('identifier', $pathTest);
         self::$luceneManager->getIndex('identifier');
@@ -176,7 +169,6 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
         
         self::$luceneManager->getIndex('identifier');
         
-        if(file_exists($pathTest))
-            Util::removeDirectoryRecursilvy($pathTest);
+        $filesystem->remove($pathTest);
     }
 }

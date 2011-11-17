@@ -3,7 +3,7 @@
 namespace Ivory\LuceneSearchBundle\Tests\DependencyInjection;
 
 use Ivory\LuceneSearchBundle\Tests\Emulation\WebTestCase;
-use Ivory\LuceneSearchBundle\Model\Util;
+use Symfony\Component\HttpKernel\Util\Filesystem;
 
 /**
  * Lucene search service test
@@ -29,8 +29,8 @@ class LuceneSearchServiceTest extends WebTestCase
     {
         $pathTest = __DIR__.'/../directory_test';
         
-        if(file_exists($pathTest))
-            Util::removeDirectoryRecursilvy($pathTest);
+        $filesystem = new Filesystem();
+        $filesystem->remove($pathTest);
         
         $luceneManager = self::createContainer(array('environment' => 'test'))->get('ivory_lucene_search');
         
@@ -43,7 +43,6 @@ class LuceneSearchServiceTest extends WebTestCase
         $this->assertEquals($luceneManager->getIndex('identifier')->getMergeFactor(), 50);
         $this->assertEquals(\Zend\Search\Lucene\Storage\Directory\Filesystem::getDefaultFilePermissions(), 0666);
         
-        if(file_exists($pathTest))
-            Util::removeDirectoryRecursilvy($pathTest);
+        $filesystem->remove($pathTest);
     }
 }

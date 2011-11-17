@@ -3,8 +3,8 @@
 namespace Ivory\LuceneSearchBundle\Model;
 
 use Zend\Search\Lucene\Analysis\Analyzer\Analyzer;
-use Zend\Search\Lucene\Storage\Directory\Filesystem;
-use Ivory\LuceneSearchBundle\Model\Util;
+use Zend\Search\Lucene\Storage\Directory\Filesystem as ZfFilesystem;
+use Symfony\Component\HttpKernel\Util\Filesystem as SfFilesystem;
 
 /**
  * Lucene manager
@@ -94,7 +94,7 @@ class LuceneManager
         $this->indexes[$identifier]->setMaxMergeDocs($this->getMaxMergeDocs($identifier));
         $this->indexes[$identifier]->setMergeFactor($this->getMergeFactor($identifier));
 
-        Filesystem::setDefaultFilePermissions($this->getPermissions($identifier));
+        ZfFilesystem::setDefaultFilePermissions($this->getPermissions($identifier));
         
         if($this->getAutoOptimized($identifier))
             $this->indexes[$identifier]->optimize();
@@ -209,8 +209,8 @@ class LuceneManager
     {
         if($this->hasPath($identifier))
         {
-            if(file_exists($this->getPath($identifier)))
-                Util::removeDirectoryRecursilvy($this->getPath($identifier));
+            $filesystem = new SfFilesystem();
+            $filesystem->remove($this->getPath($identifier));
         }
         else
             throw new \InvalidArgumentException(sprintf('The lucene index path "%s" does not exist.', $identifier));
