@@ -22,7 +22,7 @@ class WebTestCase extends BaseWebTestCase
      */
     protected static function initialize($environment)
     {
-        if(!isset(self::$initialize[$environment]) || (isset(self::$initialize[$environment]) && self::$initialize[$environment]))
+        if(!isset(self::$initialize[$environment]) || (isset(self::$initialize[$environment]) && !self::$initialize[$environment]))
         {
             $filesystem = new Filesystem();
             $filesystem->remove(__DIR__.'/cache/'.$environment);
