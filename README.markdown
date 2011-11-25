@@ -5,6 +5,8 @@ Some advanced configuration can be done for each index.
 
 It uses the [Zend framwork 2](http://github.com/zendframework/zf2) which is actually not stable but the zend lucene search framework it is.
 
+[![Build Status](https://secure.travis-ci.org/egeloen/IvoryLuceneSearchBundle.png)](http://travis-ci.org/egeloen/IvoryLuceneSearchBundle)
+
 Documentation
 -------------
 
