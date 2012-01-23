@@ -4,7 +4,7 @@ namespace Ivory\LuceneSearchBundle\Model;
 
 use Zend\Search\Lucene\Analysis\Analyzer\Analyzer;
 use Zend\Search\Lucene\Storage\Directory\Filesystem as ZfFilesystem;
-use Symfony\Component\HttpKernel\Util\Filesystem as SfFilesystem;
+use Symfony\Component\Filesystem\Filesystem as SfFilesystem;
 
 /**
  * Lucene manager

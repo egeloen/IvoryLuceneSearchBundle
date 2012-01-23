@@ -3,7 +3,7 @@
 namespace Ivory\LuceneSearchBundle\Tests\DependencyInjection;
 
 use Ivory\LuceneSearchBundle\Tests\Emulation\WebTestCase;
-use Symfony\Component\HttpKernel\Util\Filesystem;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Lucene search service test

@@ -3,7 +3,7 @@
 namespace Ivory\LuceneSearchBundle\Tests\Model;
 
 use Ivory\LuceneSearchBundle\Model\LuceneManager;
-use Symfony\Component\HttpKernel\Util\Filesystem;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Lucene manager test
