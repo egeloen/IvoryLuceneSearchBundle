@@ -2,7 +2,7 @@
     "name": "egeloen/lucene-search-bundle",
     "type": "symfony-bundle",
     "description": "Provides a zend lucene search integration for your Symfony2 Project.",
-    "keywords": ["Lucene search"],
+    "keywords": ["lucene search"],
     "license": "MIT",
     "authors": [
         {
