@@ -13,8 +13,26 @@
     "require": {
         "php": ">=5.3.0",
         "symfony/framework-bundle": "2.*",
-        "zf2": ">=2.0.0beta1"
     },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "zf2",
+                "version": "2.0.0beta1",
+                "source": {
+                    "type": "git",
+                    "url": "http://github.com/zendframework/zf2.git",
+                    "reference": "release-2.0.0beta1"
+                },
+                "autoload": {
+                    "psr-0": {
+                        "Zend\\": "library/"
+                    }
+                }
+            }
+        }
+    ],
     "autoload": {
         "psr-0": { "Ivory\\LuceneSearchBundle": "" }
     },
