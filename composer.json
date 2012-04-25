@@ -10,29 +10,9 @@
             "email": "geloen.eric@gmail.com"
         }
     ],
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "zendframework/zf2",
-                "version": "2.0.0beta3",
-                "source": {
-                    "type": "git",
-                    "url": "http://github.com/zendframework/zf2.git",
-                    "reference": "release-2.0.0beta3"
-                },
-                "autoload": {
-                    "psr-0": {
-                        "Zend\\": "library/"
-                    }
-                }
-            }
-        }
-    ],
     "require": {
         "php": ">=5.3.0",
-        "symfony/framework-bundle": "2.*",
-        "zendframework/zf2": "2.*"
+        "symfony/framework-bundle": "2.*"
     },
     "autoload": {
         "psr-0": { "Ivory\\LuceneSearchBundle": "" }
