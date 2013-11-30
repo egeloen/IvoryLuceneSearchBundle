@@ -2,7 +2,7 @@
     "name": "egeloen/lucene-search-bundle",
     "type": "symfony-bundle",
     "description": "Provides a zend lucene search integration for your Symfony2 Project.",
-    "keywords": ["lucene search"],
+    "keywords": [ "lucene search" ],
     "license": "MIT",
     "authors": [
         {
@@ -12,10 +12,34 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "symfony/framework-bundle": "2.*"
+        "symfony/framework-bundle": "2.*",
+        "symfony/filesystem": "2.*",
+        "zendframework/zendsearch": "2.0.0-rc5",
+        "zendframework/zend-stdlib": "2.2.5 as 2.0.0-rc5"
     },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/zendframework/ZendSearch"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/zendframework/Component_ZendStdlib"
+        }
+    ],
     "autoload": {
         "psr-0": { "Ivory\\LuceneSearchBundle": "" }
     },
-    "target-dir": "Ivory/LuceneSearchBundle"
+    "config": {
+        "bin-dir": "bin/"
+    },
+    "target-dir": "Ivory/LuceneSearchBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
 }
