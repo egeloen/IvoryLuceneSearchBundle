@@ -36,9 +36,9 @@ ivory_lucene_search:
         # See http://framework.zend.com/manual/en/zend.search.lucene.index-creation.html#zend.search.lucene.index-creation.optimization.maxbuffereddocs
         max_buffered_docs: 10
 
-        # Max merged documents (Optional)
+        # Max merge documents (Optional)
         # See http://framework.zend.com/manual/en/zend.search.lucene.index-creation.html#zend.search.lucene.index-creation.optimization.maxmergedocs
-        max_merged_docs: 10000 # (default: PHP_INT_MAX)
+        max_merge_docs: 10000 # (default: PHP_INT_MAX)
 
         # Merge factor (Optional)
         # See http://framework.zend.com/manual/en/zend.search.lucene.index-creation.html#zend.search.lucene.index-creation.optimization.mergefactor
@@ -68,7 +68,7 @@ $indexes = array(
         'path'              => '/path/to/store/lucene/index2',
         'analyzer'          => 'ZendSearch\Lucene\Analysis\Analyzer\Common\Text\CaseInsensitive',
         'max_buffered_docs' => 10,
-        'max_merged_docs'   => PHP_INT_MAX,
+        'max_merge_docs'    => PHP_INT_MAX,
         'merge_factor'      => 10,
         'permissions'       => 0777,
         'auto_optimized'    => true
@@ -165,4 +165,4 @@ foreach ($documents as $document) {
 }
 ```
 
-You can request much more precisly your index like describes in the zend documentation.
+You can request much more precisely your index like describes in the zend documentation.

@@ -69,14 +69,14 @@ Run the vendors script
 $ php bin/vendors update
 ```
 
-### Using submodules
+#### Using submodules
 
 ``` bash
 $ git submodule add http://git.zendframework.com/zf.git vendor
 $ git submodule add http://github.com/egeloen/IvoryLuceneSearchBundle.git vendor/bundles/Ivory/LuceneSearchBundle
 ```
 
-## Add Zend & Ivory namespaces to your autoloader
+### Add Zend & Ivory namespaces to your autoloader
 
 ``` php
 <?php
@@ -89,7 +89,7 @@ $loader->registerNamespaces(array(
 );
 ```
 
-## Add the IvoryLuceneSearchBundle to your application kernel
+### Add the IvoryLuceneSearchBundle to your application kernel
 
 ``` php
 <?php
@@ -103,5 +103,3 @@ public function registerBundles()
     );
 }
 ```
-
-Next : [Usage](http://github.com/egeloen/IvoryLuceneSearchBundle/blob/master/Resources/doc/usage.md)
