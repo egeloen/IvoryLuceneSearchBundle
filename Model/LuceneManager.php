@@ -62,7 +62,7 @@ class LuceneManager
         $config = $this->getConfig($identifier);
         $path = $config['path'];
 
-        if (!file_exists($path)) {
+        if (!$this->checkPath($path)) {
             $this->indexes[$identifier] = Lucene::create($path);
         } else {
             $this->indexes[$identifier] = Lucene::open($path);
@@ -234,5 +234,17 @@ class LuceneManager
         }
 
         return $this->configs[$identifier];
+    }
+
+    /**
+     * Checks if a lucene index path exists.
+     *
+     * @param string $path The lucene index path.
+     *
+     * @return boolean TRUE if the lucene index path exists else FALSE.
+     */
+    protected function checkPath($path)
+    {
+        return file_exists($path) && is_readable($path) && ($resources = scandir($path)) && (count($resources) > 2);
     }
 }
