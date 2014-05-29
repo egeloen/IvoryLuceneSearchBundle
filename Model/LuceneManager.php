@@ -23,19 +23,38 @@ use ZendSearch\Lucene\Storage\Directory\Filesystem as ZfFilesystem;
  */
 class LuceneManager
 {
-    /** @var array */
-    protected $indexes;
+    /** @const string */
+    const DEFAULT_ANALYZER = 'ZendSearch\Lucene\Analysis\Analyzer\Common\Text\CaseInsensitive';
+
+    /** @const integer */
+    const DEFAULT_MAX_BUFFERED_DOCS = 10;
+
+    /** @const integer */
+    const DEFAULT_MAX_MERGE_DOCS = PHP_INT_MAX;
+
+    /** @const integer */
+    const DEFAULT_MERGE_FACTOR = 10;
+
+    /** @const integer */
+    const DEFAULT_PERMISSIONS = 0777;
+
+    /** @const boolean */
+    const DEFAULT_AUTO_OPTIMIZED = false;
 
     /** @var array */
-    protected $configs;
+    protected $indexes = array();
+
+    /** @var array */
+    protected $configs = array();
 
     /**
-     * Creates a lucene manager.
+     * Checks if the lucene manager has indexes.
+     *
+     * @return boolean TRUE if the lucene manager has indexes else FALSE.
      */
-    public function __construct()
+    public function hasIndexes()
     {
-        $this->indexes = array();
-        $this->configs = array();
+        return !empty($this->configs);
     }
 
     /**
@@ -116,39 +135,15 @@ class LuceneManager
                 throw new \InvalidArgumentException('Each lucene index must have a path value.');
             }
 
-            if (!isset($index['analyzer'])) {
-                $index['analyzer'] = 'ZendSearch\Lucene\Analysis\Analyzer\Common\Text\CaseInsensitive';
-            }
-
-            if (!isset($index['max_buffered_docs'])) {
-                $index['max_buffered_docs'] = 10;
-            }
-
-            if (!isset($index['max_merge_docs'])) {
-                $index['max_merge_docs'] = PHP_INT_MAX;
-            }
-
-            if (!isset($index['merge_factor'])) {
-                $index['merge_factor'] = 10;
-            }
-
-            if (!isset($index['permissions'])) {
-                $index['permissions'] = 0777;
-            }
-
-            if (!isset($index['auto_optimized'])) {
-                $index['auto_optimized'] = false;
-            }
-
             $this->setIndex(
                 $identifier,
                 $index['path'],
-                $index['analyzer'],
-                $index['max_buffered_docs'],
-                $index['max_merge_docs'],
-                $index['merge_factor'],
-                $index['permissions'],
-                $index['auto_optimized']
+                isset($index['analyzer']) ? $index['analyzer'] : self::DEFAULT_ANALYZER,
+                isset($index['max_buffered_docs']) ? $index['max_buffered_docs'] : self::DEFAULT_MAX_BUFFERED_DOCS,
+                isset($index['max_merge_docs']) ? $index['max_merge_docs'] : self::DEFAULT_MAX_MERGE_DOCS,
+                isset($index['merge_factor']) ? $index['merge_factor'] : self::DEFAULT_MERGE_FACTOR,
+                isset($index['permissions']) ? $index['permissions'] : self::DEFAULT_PERMISSIONS,
+                isset($index['auto_optimized']) ? $index['auto_optimized'] : self::DEFAULT_AUTO_OPTIMIZED
             );
         }
     }
@@ -162,18 +157,18 @@ class LuceneManager
      * @param integer $maxBufferedDocs The lucene max buffered docs.
      * @param integer $maxMergeDocs    The lucene max merge docs.
      * @param integer $mergeFactor     The lucene merge factor.
-     * @param integer $permissions     The lucene permissions
+     * @param integer $permissions     The lucene permissions.
      * @param boolean $autoOptimized   The lucene auto optimized.
      */
     public function setIndex(
         $identifier,
         $path,
-        $analyzer = 'ZendSearch\Lucene\Analysis\Analyzer\Common\Text\CaseInsensitive',
-        $maxBufferedDocs = 10,
-        $maxMergeDocs = PHP_INT_MAX,
-        $mergeFactor = 10,
-        $permissions = 0777,
-        $autoOptimized = false
+        $analyzer = self::DEFAULT_ANALYZER,
+        $maxBufferedDocs = self::DEFAULT_MAX_BUFFERED_DOCS,
+        $maxMergeDocs = self::DEFAULT_MAX_MERGE_DOCS,
+        $mergeFactor = self::DEFAULT_MERGE_FACTOR,
+        $permissions = self::DEFAULT_PERMISSIONS,
+        $autoOptimized = self::DEFAULT_AUTO_OPTIMIZED
     ) {
         $this->configs[$identifier] = array(
             'path'              => $path,
