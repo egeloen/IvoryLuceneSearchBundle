@@ -11,12 +11,12 @@
 
 namespace Ivory\LuceneSearchBundle\DependencyInjection;
 
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Ivory\LuceneSearchBundle\Model\LuceneManager;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * Ivory lucene search bundle configuration.
+ * Ivory lucene search configuration.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
@@ -28,21 +28,8 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('ivory_lucene_search');
-
-        $this->addIndexesSection($rootNode);
-
-        return $treeBuilder;
-    }
-
-    /**
-     * Add indexes section.
-     *
-     * @param Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition $node The root node.
-     */
-    protected function addIndexesSection(ArrayNodeDefinition $node)
-    {
-        $node
+        $treeBuilder
+            ->root('ivory_lucene_search')
             ->useAttributeAsKey('name')
             ->prototype('array')
                 ->children()
@@ -50,24 +37,26 @@ class Configuration implements ConfigurationInterface
                         ->isRequired()
                     ->end()
                     ->scalarNode('analyzer')
-                        ->defaultValue('ZendSearch\Lucene\Analysis\Analyzer\Common\Text\CaseInsensitive')
+                        ->defaultValue(LuceneManager::DEFAULT_ANALYZER)
                     ->end()
                     ->scalarNode('max_buffered_docs')
-                        ->defaultValue(10)
+                        ->defaultValue(LuceneManager::DEFAULT_MAX_BUFFERED_DOCS)
                     ->end()
                     ->scalarNode('max_merge_docs')
-                        ->defaultValue(PHP_INT_MAX)
+                        ->defaultValue(LuceneManager::DEFAULT_MAX_MERGE_DOCS)
                     ->end()
                     ->scalarNode('merge_factor')
-                        ->defaultValue(10)
+                        ->defaultValue(LuceneManager::DEFAULT_MERGE_FACTOR)
                     ->end()
                     ->scalarNode('permissions')
-                        ->defaultValue(0777)
+                        ->defaultValue(LuceneManager::DEFAULT_PERMISSIONS)
                     ->end()
                     ->scalarNode('auto_optimized')
-                        ->defaultFalse()
+                        ->defaultValue(LuceneManager::DEFAULT_AUTO_OPTIMIZED)
                     ->end()
                 ->end()
             ->end();
+
+        return $treeBuilder;
     }
 }
