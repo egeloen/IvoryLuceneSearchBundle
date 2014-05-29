@@ -1,0 +1,3 @@
+ivory_lucene_search:
+    identifier:
+        path: "%kernel.root_dir%/directory_test"

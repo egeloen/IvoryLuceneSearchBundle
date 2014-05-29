@@ -27,7 +27,7 @@ class YamlIvoryLuceneSearchExtensionTest extends AbstractIvoryLuceneSearchExtens
      */
     protected function loadConfiguration(ContainerBuilder $container, $configuration)
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/Fixtures/Yaml/'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Fixtures/config/Yaml/'));
         $loader->load($configuration.'.yml');
     }
 }

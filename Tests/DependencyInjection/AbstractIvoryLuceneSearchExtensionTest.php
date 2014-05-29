@@ -12,6 +12,7 @@
 namespace Ivory\LuceneSearchBundle\Tests\DependencyInjection;
 
 use Ivory\LuceneSearchBundle\DependencyInjection\IvoryLuceneSearchExtension;
+use Ivory\LuceneSearchBundle\Model\LuceneManager;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Filesystem\Filesystem as SfFilesystem;
 use ZendSearch\Lucene\Analysis\Analyzer\Analyzer;
@@ -25,16 +26,19 @@ use ZendSearch\Lucene\Storage\Directory\Filesystem as ZfFilesystem;
 abstract class AbstractIvoryLuceneSearchExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Symfony\Component\DependencyInjection\ContainerBuilder */
-    private $container;
+    protected $container;
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
+        $this->tearDown();
+
         $this->container = new ContainerBuilder();
-        $this->container->setParameter('kernel.root_dir', __DIR__.'/Fixtures');
-        $this->container->registerExtension(new IvoryLuceneSearchExtension());
+        $this->container->setParameter('kernel.root_dir', __DIR__.'/../Fixtures');
+        $this->container->registerExtension($lucene = new IvoryLuceneSearchExtension());
+        $this->container->loadFromExtension($lucene->getAlias());
     }
 
     /**
@@ -42,7 +46,45 @@ abstract class AbstractIvoryLuceneSearchExtensionTest extends \PHPUnit_Framework
      */
     protected function tearDown()
     {
+        $path = __DIR__.'/../Fixtures/directory_test';
+
+        if (file_exists($path)) {
+            $filesystem = new SfFilesystem();
+            $filesystem->remove($path);
+        }
+
         unset($this->container);
+    }
+
+    /**
+     * Gets the config provider.
+     *
+     * @return array The config provider.
+     */
+    public function configProvider()
+    {
+        return array(
+            array(
+                'default',
+                array(
+                    'analyzer'          => LuceneManager::DEFAULT_ANALYZER,
+                    'max_buffered_docs' => LuceneManager::DEFAULT_MAX_BUFFERED_DOCS,
+                    'max_merge_docs'    => LuceneManager::DEFAULT_MAX_MERGE_DOCS,
+                    'merge_factor'      => LuceneManager::DEFAULT_MERGE_FACTOR,
+                    'permissions'       => LuceneManager::DEFAULT_PERMISSIONS,
+                ),
+            ),
+            array(
+                'custom',
+                array(
+                    'analyzer'          => 'ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive',
+                    'max_buffered_docs' => 100,
+                    'max_merge_docs'    => 1000,
+                    'merge_factor'      => 50,
+                    'permissions'       => 0666,
+                ),
+            )
+        );
     }
 
     /**
@@ -53,42 +95,35 @@ abstract class AbstractIvoryLuceneSearchExtensionTest extends \PHPUnit_Framework
      */
     abstract protected function loadConfiguration(ContainerBuilder $container, $configuration);
 
-    public function testLuceneSearchServiceWithoutConfiguration()
+    public function testManagerWithoutConfiguration()
     {
-        $this->loadConfiguration($this->container, 'empty');
         $this->container->compile();
 
         $luceneManager = $this->container->get('ivory_lucene_search');
 
         $this->assertInstanceOf('Ivory\LuceneSearchBundle\Model\LuceneManager', $luceneManager);
+        $this->assertFalse($luceneManager->hasIndexes());
     }
 
-    public function testSingleIndex()
+    /**
+     * @dataProvider configProvider
+     */
+    public function testManagerWithConfiguration($name, array $config)
     {
-        $this->loadConfiguration($this->container, 'single');
+        $this->loadConfiguration($this->container, $name);
         $this->container->compile();
-
-        $pathTest = __DIR__.'/Fixtures/directory_test';
-
-        $filesystem = new SfFilesystem();
-        $filesystem->remove($pathTest);
 
         $luceneManager = $this->container->get('ivory_lucene_search');
 
         $this->assertInstanceOf('Ivory\LuceneSearchBundle\Model\LuceneManager', $luceneManager);
+        $this->assertTrue($luceneManager->hasIndexes());
 
         $index = $luceneManager->getIndex('identifier');
 
-        $this->assertInstanceOf(
-            'ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive',
-            Analyzer::getDefault()
-        );
-
-        $this->assertSame(100, $index->getMaxBufferedDocs());
-        $this->assertSame(1000, $index->getMaxMergeDocs());
-        $this->assertSame(50, $index->getMergeFactor());
-        $this->assertEquals(0666, ZfFilesystem::getDefaultFilePermissions());
-
-        $filesystem->remove($pathTest);
+        $this->assertInstanceOf($config['analyzer'], Analyzer::getDefault());
+        $this->assertSame($config['max_buffered_docs'], $index->getMaxBufferedDocs());
+        $this->assertSame($config['max_merge_docs'], $index->getMaxMergeDocs());
+        $this->assertSame($config['merge_factor'], $index->getMergeFactor());
+        $this->assertSame($config['permissions'], ZfFilesystem::getDefaultFilePermissions());
     }
 }

@@ -23,19 +23,23 @@ use ZendSearch\Lucene\Storage\Directory\Filesystem as ZfFilesystem;
  */
 class LuceneManagerTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var string */
-    private $path;
+    /** @var array */
+    protected $paths;
 
     /** @var \Ivory\LuceneSearchBundle\Model\LuceneManager */
-    private $luceneManager;
+    protected $luceneManager;
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->path = sys_get_temp_dir().'/'.uniqid();
-        $this->tearDown();
+        $this->paths = array(
+            sys_get_temp_dir().'/'.uniqid().'1',
+            sys_get_temp_dir().'/'.uniqid().'2',
+        );
+
+        $this->tearDown(false);
 
         $this->luceneManager = new LuceneManager();
     }
@@ -43,14 +47,21 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown($clean = true)
     {
-        if (file_exists($this->path)) {
-            $filesystem = new SfFilesystem();
-            $filesystem->remove($this->path);
+        $filesystem = new SfFilesystem();
+
+        foreach ($this->paths as $path) {
+            if (file_exists($path)) {
+                $filesystem->remove($path);
+            }
         }
 
         unset($this->luceneManager);
+
+        if ($clean) {
+            unset($this->paths);
+        }
     }
 
     public function testHasIndexWithIndex()
@@ -66,10 +77,10 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetIndexWithIndex()
     {
-        $this->luceneManager->setIndex('identifier', $this->path);
+        $this->luceneManager->setIndex('identifier', $this->paths[0]);
 
         $this->assertInstanceOf('ZendSearch\Lucene\Index', $this->luceneManager->getIndex('identifier'));
-        $this->assertTrue(file_exists($this->path));
+        $this->assertTrue(file_exists($this->paths[0]));
     }
 
     /**
@@ -85,7 +96,7 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->luceneManager->setIndex(
             'identifier',
-            $this->path,
+            $this->paths[0],
             'ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive',
             100,
             1000000,
@@ -93,53 +104,47 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
             0666
         );
 
-        $this->luceneManager->getIndex('identifier');
-        $this->assertInstanceOf('ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive', Analyzer::getDefault());
-        $this->assertSame(100, $this->luceneManager->getIndex('identifier')->getMaxBufferedDocs());
-        $this->assertSame(1000000, $this->luceneManager->getIndex('identifier')->getMaxMergeDocs());
-        $this->assertSame(5, $this->luceneManager->getIndex('identifier')->getMergeFactor());
+        $index = $this->luceneManager->getIndex('identifier');
+
+        $this->assertInstanceOf(
+            'ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive',
+            Analyzer::getDefault()
+        );
+
+        $this->assertSame(100, $index->getMaxBufferedDocs());
+        $this->assertSame(1000000, $index->getMaxMergeDocs());
+        $this->assertSame(5, $index->getMergeFactor());
         $this->assertSame(0666, ZfFilesystem::getDefaultFilePermissions());
     }
 
     public function testRemoveIndex()
     {
-        $this->luceneManager->setIndex('identifier', $this->path);
+        $this->luceneManager->setIndex('identifier', $this->paths[0]);
         $this->luceneManager->getIndex('identifier');
         $this->luceneManager->removeIndex('identifier');
-        $this->assertTrue(file_exists($this->path));
+        $this->assertTrue(file_exists($this->paths[0]));
 
-        $this->luceneManager->setIndex('identifier', $this->path);
+        $this->luceneManager->setIndex('identifier', $this->paths[0]);
         $this->luceneManager->getIndex('identifier');
         $this->luceneManager->removeIndex('identifier', true);
-        $this->assertFalse(file_exists($this->path));
+        $this->assertFalse(file_exists($this->paths[0]));
     }
 
     public function testEraseIndex()
     {
-        $this->luceneManager->setIndex('identifier', $this->path);
+        $this->luceneManager->setIndex('identifier', $this->paths[0]);
         $this->luceneManager->getIndex('identifier');
-        $this->assertTrue(file_exists($this->path));
+        $this->assertTrue(file_exists($this->paths[0]));
 
         $this->luceneManager->eraseIndex('identifier');
-        $this->assertFalse(file_exists($this->path));
+        $this->assertFalse(file_exists($this->paths[0]));
     }
 
     public function testSetIndexesWithValidValues()
     {
-        $paths = array(
-            sys_get_temp_dir().'/'.uniqid().'1',
-            sys_get_temp_dir().'/'.uniqid().'2',
-        );
-
-        $filesytem = new SfFilesystem();
-
-        foreach($paths as $pathTest) {
-            $filesytem->remove($pathTest);
-        }
-
         $this->luceneManager->setIndexes(array(
             'identifier1' => array(
-                'path'              => $paths[0],
+                'path'              => $this->paths[0],
                 'analyzer'          => 'ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive',
                 'max_buffered_docs' => 100,
                 'max_merge_docs'    => 1000000,
@@ -148,27 +153,29 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
                 'auto_optimized'    => true,
             ),
             'identifier2' => array(
-                'path' => $paths[1],
+                'path' => $this->paths[1],
             )
         ));
 
-        $this->luceneManager->getIndex('identifier1');
-        $this->assertInstanceOf('ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive', Analyzer::getDefault());
-        $this->assertSame(100, $this->luceneManager->getIndex('identifier1')->getMaxBufferedDocs());
-        $this->assertSame(1000000, $this->luceneManager->getIndex('identifier1')->getMaxMergeDocs());
-        $this->assertSame(5, $this->luceneManager->getIndex('identifier1')->getMergeFactor());
+        $index1 = $this->luceneManager->getIndex('identifier1');
+
+        $this->assertInstanceOf(
+            'ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive',
+            Analyzer::getDefault()
+        );
+
+        $this->assertSame(100, $index1->getMaxBufferedDocs());
+        $this->assertSame(1000000, $index1->getMaxMergeDocs());
+        $this->assertSame(5, $index1->getMergeFactor());
         $this->assertSame(0666, ZfFilesystem::getDefaultFilePermissions());
 
-        $this->luceneManager->getIndex('identifier2');
-        $this->assertInstanceOf('ZendSearch\Lucene\Analysis\Analyzer\Common\Text\CaseInsensitive', Analyzer::getDefault());
-        $this->assertSame(10, $this->luceneManager->getIndex('identifier2')->getMaxBufferedDocs());
-        $this->assertSame(PHP_INT_MAX, $this->luceneManager->getIndex('identifier2')->getMaxMergeDocs());
-        $this->assertSame(10, $this->luceneManager->getIndex('identifier2')->getMergeFactor());
-        $this->assertSame(0777, ZfFilesystem::getDefaultFilePermissions());
+        $index2 = $this->luceneManager->getIndex('identifier2');
 
-        foreach($paths as $pathTest) {
-            $filesytem->remove($pathTest);
-        }
+        $this->assertInstanceOf(LuceneManager::DEFAULT_ANALYZER, Analyzer::getDefault());
+        $this->assertSame(LuceneManager::DEFAULT_MAX_BUFFERED_DOCS, $index2->getMaxBufferedDocs());
+        $this->assertSame(LuceneManager::DEFAULT_MAX_MERGE_DOCS, $index2->getMaxMergeDocs());
+        $this->assertSame(LuceneManager::DEFAULT_MERGE_FACTOR, $index2->getMergeFactor());
+        $this->assertSame(LuceneManager::DEFAULT_PERMISSIONS, ZfFilesystem::getDefaultFilePermissions());
     }
 
     /**
