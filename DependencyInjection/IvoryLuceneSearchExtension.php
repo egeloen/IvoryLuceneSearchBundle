@@ -11,34 +11,29 @@
 
 namespace Ivory\LuceneSearchBundle\DependencyInjection;
 
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\Config\FileLocator;
+use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
 /**
  * Ivory lucene search extension.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class IvoryLuceneSearchExtension extends Extension
+class IvoryLuceneSearchExtension extends ConfigurableExtension
 {
     /**
      * {@inheritdoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    protected function loadInternal(array $config, ContainerBuilder $container)
     {
-        $config = $this->processConfiguration(new Configuration(), $configs);
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-
-        $resources = array('services.xml');
-        foreach($resources as $resource) {
-            $loader->load($resource);
+        foreach(array('services') as $resource) {
+            $loader->load($resource.'.xml');
         }
 
-        if (!empty($config)) {
-            $this->loadIndexes($config, $container);
-        }
+        $this->loadIndexes($config, $container);
     }
 
     /**
@@ -49,6 +44,10 @@ class IvoryLuceneSearchExtension extends Extension
      */
     protected function loadIndexes(array $config, ContainerBuilder $container)
     {
+        if (empty($config)) {
+            return;
+        }
+
         $container
             ->getDefinition('ivory_lucene_search')
             ->addMethodCall('setIndexes', array($config));
