@@ -1,6 +1,6 @@
 # CHANGELOG
 
-### 1.0.1 (????-??-??)
+### 1.0.1 (2014-06-17)
 
  * 0e6fddd - [Travis] Add Symfony 2.5
  * 106ca94 - [Doc] Refine installation
