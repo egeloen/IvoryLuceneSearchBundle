@@ -2,6 +2,9 @@
 
 ### 1.0.1 (????-??-??)
 
+ * 0e6fddd - [Travis] Add Symfony 2.5
+ * 106ca94 - [Doc] Refine installation
+ * 9858b20 - [Composer] Remove repositories section
  * c2ac50f - [README] Add scrutinizer CI badge
  * 186de4b - [Test] Refactor according to previous refactoring
  * ad1a407 - [DependencyInjection] Rely on CongigurableExtension
