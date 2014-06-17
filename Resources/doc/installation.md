@@ -2,29 +2,14 @@
 
 ## Symfony >= 2.1
 
-Before starting, I inform you the installation with Composer is a little tricky due to missing packages/tags on the
-Zend Lucene Search official repository. Basically, the `zendframework/zendsearch` is not registered on packagist.
-
-So, before requiring something, you need to register this repository in your `composer.json`:
-
-``` json
-{
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/zendframework/ZendSearch"
-        }
-    ]
-}
-```
-
-Now, Composer is aware of it,. the second issue is about tag as the last one of the `zendframework/zendsearch` is
+Before starting, I inform you the installation with Composer is a little tricky due to missing tags on the
+Zend Lucene Search official repository. Basically, the last tag of the `zendframework/zendsearch` is
 `2.0.0-RC5` which is really old... Then, the following instruction will allow you to install the latest version:
 
 ``` json
 {
     "require": {
-        "egeloen/lucene-search-bundle": "dev-master",
+        "egeloen/lucene-search-bundle": "~1.0",
         "zendframework/zendsearch": "dev-master"
     }
 }
