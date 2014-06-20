@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### 1.0.2 (????-??-??)
+
+ * 82d3ace - [Travis][Composer] Remove --dev
+ * dccb77d - [Composer] Upgrade to PSR-4
+
 ### 1.0.1 (2014-06-17)
 
  * 0e6fddd - [Travis] Add Symfony 2.5
