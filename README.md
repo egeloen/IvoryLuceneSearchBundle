@@ -3,6 +3,8 @@
 [![Build Status](https://secure.travis-ci.org/egeloen/IvoryLuceneSearchBundle.png)](http://travis-ci.org/egeloen/IvoryLuceneSearchBundle)
 [![Coverage Status](https://coveralls.io/repos/egeloen/IvoryLuceneSearchBundle/badge.png?branch=master)](https://coveralls.io/r/egeloen/IvoryLuceneSearchBundle?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/egeloen/IvoryLuceneSearchBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/egeloen/IvoryLuceneSearchBundle/?branch=master)
+[![Dependency Status](https://www.versioneye.com/php/egeloen:lucene-search-bundle/badge.svg)](https://www.versioneye.com/php/egeloen:lucene-search-bundle)
+
 [![Latest Stable Version](https://poser.pugx.org/egeloen/lucene-search-bundle/v/stable.svg)](https://packagist.org/packages/egeloen/lucene-search-bundle)
 [![Latest Unstable Version](https://poser.pugx.org/egeloen/lucene-search-bundle/v/unstable.svg)](https://packagist.org/packages/egeloen/lucene-search-bundle)
 [![Total Downloads](https://poser.pugx.org/egeloen/lucene-search-bundle/downloads.svg)](https://packagist.org/packages/egeloen/lucene-search-bundle)
