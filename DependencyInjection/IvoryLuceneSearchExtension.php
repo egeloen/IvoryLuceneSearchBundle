@@ -14,20 +14,22 @@ namespace Ivory\LuceneSearchBundle\DependencyInjection;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * Ivory lucene search extension.
  *
  * @author GeLo <geloen.eric@gmail.com>
  */
-class IvoryLuceneSearchExtension extends ConfigurableExtension
+class IvoryLuceneSearchExtension extends Extension
 {
     /**
      * {@inheritdoc}
      */
-    protected function loadInternal(array $config, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container)
     {
+        $config = $this->processConfiguration(new Configuration(), $configs);
+
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         foreach(array('services') as $resource) {
             $loader->load($resource.'.xml');
