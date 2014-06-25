@@ -2,6 +2,10 @@
 
 ### 1.0.2 (????-??-??)
 
+ * ed67d0f - [README] Add packagist badges
+ * 29acad2 - [Travis] Increase build matrix
+ * d03383c - [Composer] Bump PHP to 5.3.3 + PHPUnit to 4.0
+ * a34e7ae - Add Symfony 2.0 support
  * 82d3ace - [Travis][Composer] Remove --dev
  * dccb77d - [Composer] Upgrade to PSR-4
 
