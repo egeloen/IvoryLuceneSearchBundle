@@ -2,6 +2,7 @@
 
 ### 1.0.2 (????-??-??)
 
+ * 182475a - [README] Add versioneye badge
  * ed67d0f - [README] Add packagist badges
  * 29acad2 - [Travis] Increase build matrix
  * d03383c - [Composer] Bump PHP to 5.3.3 + PHPUnit to 4.0
