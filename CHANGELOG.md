@@ -2,6 +2,7 @@
 
 ### 1.0.2 (????-??-??)
 
+ * f16a5f1 - [Travis] Improve build matrix
  * 182475a - [README] Add versioneye badge
  * ed67d0f - [README] Add packagist badges
  * 29acad2 - [Travis] Increase build matrix
