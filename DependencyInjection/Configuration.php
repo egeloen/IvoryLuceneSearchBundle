@@ -54,6 +54,9 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('auto_optimized')
                         ->defaultValue(LuceneManager::DEFAULT_AUTO_OPTIMIZED)
                     ->end()
+                    ->scalarNode('query_parser_encoding')
+                        ->defaultValue(LuceneManager::DEFAULT_QUERY_PARSER_ENCODING)
+                    ->end()
                 ->end()
             ->end();
 

@@ -15,6 +15,7 @@ use Symfony\Component\Filesystem\Filesystem as SfFilesystem;
 use ZendSearch\Lucene\Analysis\Analyzer\Analyzer;
 use ZendSearch\Lucene\Lucene;
 use ZendSearch\Lucene\Storage\Directory\Filesystem as ZfFilesystem;
+use ZendSearch\Lucene\Search\QueryParser;
 
 /**
  * Lucene manager.
@@ -40,6 +41,9 @@ class LuceneManager
 
     /** @const boolean */
     const DEFAULT_AUTO_OPTIMIZED = false;
+
+    /** @const string */
+    const DEFAULT_QUERY_PARSER_ENCODING = '';
 
     /** @var array */
     protected $indexes = array();
@@ -99,6 +103,8 @@ class LuceneManager
             $this->indexes[$identifier]->optimize();
         }
 
+        QueryParser::setDefaultEncoding($config['query_parser_encoding']);
+
         return $this->indexes[$identifier];
     }
 
@@ -109,13 +115,14 @@ class LuceneManager
      *
      * array(
      *     'identifier1' => array(
-     *         'path'              => '/path/to/lucene/index1',
-     *         'analyzer'          => 'ZendSearch\Lucene\Analysis\Analyzer\Common\Text\CaseInsensitive',
-     *         'max_buffered_docs' => 10,
-     *         'max_merge_docs'    => PHP_INT_MAX,
-     *         'merge_factor'      => 10,
-     *         'permissions'       => 0777,
-     *         'auto_optimized'    => false
+     *         'path'                  => '/path/to/lucene/index1',
+     *         'analyzer'              => 'ZendSearch\Lucene\Analysis\Analyzer\Common\Text\CaseInsensitive',
+     *         'max_buffered_docs'     => 10,
+     *         'max_merge_docs'        => PHP_INT_MAX,
+     *         'merge_factor'          => 10,
+     *         'permissions'           => 0777,
+     *         'auto_optimized'        => false,
+     *         'query_parser_encoding' => ''
      *     ),
      *     'identifier2' => array(
      *         'path' => '/path/to/lucene/index2'
@@ -143,7 +150,8 @@ class LuceneManager
                 isset($index['max_merge_docs']) ? $index['max_merge_docs'] : self::DEFAULT_MAX_MERGE_DOCS,
                 isset($index['merge_factor']) ? $index['merge_factor'] : self::DEFAULT_MERGE_FACTOR,
                 isset($index['permissions']) ? $index['permissions'] : self::DEFAULT_PERMISSIONS,
-                isset($index['auto_optimized']) ? $index['auto_optimized'] : self::DEFAULT_AUTO_OPTIMIZED
+                isset($index['auto_optimized']) ? $index['auto_optimized'] : self::DEFAULT_AUTO_OPTIMIZED,
+                isset($index['query_parser_encoding']) ? $index['query_parser_encoding'] : self::DEFAULT_QUERY_PARSER_ENCODING
             );
         }
     }
@@ -151,14 +159,15 @@ class LuceneManager
     /**
      * Sets a lucene index.
      *
-     * @param string  $identifier      The lucene identifier.
-     * @param string  $path            The lucene path.
-     * @param string  $analyzer        The lucene analyzer class name.
-     * @param integer $maxBufferedDocs The lucene max buffered docs.
-     * @param integer $maxMergeDocs    The lucene max merge docs.
-     * @param integer $mergeFactor     The lucene merge factor.
-     * @param integer $permissions     The lucene permissions.
-     * @param boolean $autoOptimized   The lucene auto optimized.
+     * @param string  $identifier          The lucene identifier.
+     * @param string  $path                The lucene path.
+     * @param string  $analyzer            The lucene analyzer class name.
+     * @param integer $maxBufferedDocs     The lucene max buffered docs.
+     * @param integer $maxMergeDocs        The lucene max merge docs.
+     * @param integer $mergeFactor         The lucene merge factor.
+     * @param integer $permissions         The lucene permissions.
+     * @param boolean $autoOptimized       The lucene auto optimized.
+     * @param string  $queryParserEncoding The lucene query parser encoding.
      */
     public function setIndex(
         $identifier,
@@ -168,16 +177,18 @@ class LuceneManager
         $maxMergeDocs = self::DEFAULT_MAX_MERGE_DOCS,
         $mergeFactor = self::DEFAULT_MERGE_FACTOR,
         $permissions = self::DEFAULT_PERMISSIONS,
-        $autoOptimized = self::DEFAULT_AUTO_OPTIMIZED
+        $autoOptimized = self::DEFAULT_AUTO_OPTIMIZED,
+        $queryParserEncoding = self::DEFAULT_QUERY_PARSER_ENCODING
     ) {
         $this->configs[$identifier] = array(
-            'path'              => $path,
-            'analyzer'          => $analyzer,
-            'max_buffered_docs' => $maxBufferedDocs,
-            'max_merge_docs'    => $maxMergeDocs,
-            'merge_factor'      => $mergeFactor,
-            'permissions'       => $permissions,
-            'auto_optimized'    => $autoOptimized,
+            'path'                  => $path,
+            'analyzer'              => $analyzer,
+            'max_buffered_docs'     => $maxBufferedDocs,
+            'max_merge_docs'        => $maxMergeDocs,
+            'merge_factor'          => $mergeFactor,
+            'permissions'           => $permissions,
+            'auto_optimized'        => $autoOptimized,
+            'query_parser_encoding' => $queryParserEncoding
         );
     }
 

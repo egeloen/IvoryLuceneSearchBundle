@@ -17,6 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Filesystem\Filesystem as SfFilesystem;
 use ZendSearch\Lucene\Analysis\Analyzer\Analyzer;
 use ZendSearch\Lucene\Storage\Directory\Filesystem as ZfFilesystem;
+use ZendSearch\Lucene\Search\QueryParser;
 
 /**
  * Ivory Lucene search extension test.
@@ -67,21 +68,23 @@ abstract class AbstractIvoryLuceneSearchExtensionTest extends \PHPUnit_Framework
             array(
                 'default',
                 array(
-                    'analyzer'          => LuceneManager::DEFAULT_ANALYZER,
-                    'max_buffered_docs' => LuceneManager::DEFAULT_MAX_BUFFERED_DOCS,
-                    'max_merge_docs'    => LuceneManager::DEFAULT_MAX_MERGE_DOCS,
-                    'merge_factor'      => LuceneManager::DEFAULT_MERGE_FACTOR,
-                    'permissions'       => LuceneManager::DEFAULT_PERMISSIONS,
+                    'analyzer'              => LuceneManager::DEFAULT_ANALYZER,
+                    'max_buffered_docs'     => LuceneManager::DEFAULT_MAX_BUFFERED_DOCS,
+                    'max_merge_docs'        => LuceneManager::DEFAULT_MAX_MERGE_DOCS,
+                    'merge_factor'          => LuceneManager::DEFAULT_MERGE_FACTOR,
+                    'permissions'           => LuceneManager::DEFAULT_PERMISSIONS,
+                    'query_parser_encoding' => LuceneManager::DEFAULT_QUERY_PARSER_ENCODING,
                 ),
             ),
             array(
                 'custom',
                 array(
-                    'analyzer'          => 'ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive',
-                    'max_buffered_docs' => 100,
-                    'max_merge_docs'    => 1000,
-                    'merge_factor'      => 50,
-                    'permissions'       => 0666,
+                    'analyzer'              => 'ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive',
+                    'max_buffered_docs'     => 100,
+                    'max_merge_docs'        => 1000,
+                    'merge_factor'          => 50,
+                    'permissions'           => 0666,
+                    'query_parser_encoding' => 'UTF-8',
                 ),
             )
         );
@@ -125,5 +128,6 @@ abstract class AbstractIvoryLuceneSearchExtensionTest extends \PHPUnit_Framework
         $this->assertSame($config['max_merge_docs'], $index->getMaxMergeDocs());
         $this->assertSame($config['merge_factor'], $index->getMergeFactor());
         $this->assertSame($config['permissions'], ZfFilesystem::getDefaultFilePermissions());
+        $this->assertSame($config['query_parser_encoding'], QueryParser::getDefaultEncoding());
     }
 }

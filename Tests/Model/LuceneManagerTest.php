@@ -15,6 +15,7 @@ use Ivory\LuceneSearchBundle\Model\LuceneManager;
 use Symfony\Component\Filesystem\Filesystem as SfFilesystem;
 use ZendSearch\Lucene\Analysis\Analyzer\Analyzer;
 use ZendSearch\Lucene\Storage\Directory\Filesystem as ZfFilesystem;
+use ZendSearch\Lucene\Search\QueryParser;
 
 /**
  * Lucene manager test.
@@ -101,7 +102,9 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
             100,
             1000000,
             5,
-            0666
+            0666,
+            false,
+            'UTF-8'
         );
 
         $index = $this->luceneManager->getIndex('identifier');
@@ -115,6 +118,7 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(1000000, $index->getMaxMergeDocs());
         $this->assertSame(5, $index->getMergeFactor());
         $this->assertSame(0666, ZfFilesystem::getDefaultFilePermissions());
+        $this->assertSame('UTF-8', QueryParser::getDefaultEncoding());
     }
 
     public function testRemoveIndex()
@@ -144,13 +148,14 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->luceneManager->setIndexes(array(
             'identifier1' => array(
-                'path'              => $this->paths[0],
-                'analyzer'          => 'ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive',
-                'max_buffered_docs' => 100,
-                'max_merge_docs'    => 1000000,
-                'merge_factor'      => 5,
-                'permissions'       => 0666,
-                'auto_optimized'    => true,
+                'path'                  => $this->paths[0],
+                'analyzer'              => 'ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive',
+                'max_buffered_docs'     => 100,
+                'max_merge_docs'        => 1000000,
+                'merge_factor'          => 5,
+                'permissions'           => 0666,
+                'auto_optimized'        => true,
+                'query_parser_encoding' => 'UTF-8',
             ),
             'identifier2' => array(
                 'path' => $this->paths[1],
@@ -168,6 +173,7 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(1000000, $index1->getMaxMergeDocs());
         $this->assertSame(5, $index1->getMergeFactor());
         $this->assertSame(0666, ZfFilesystem::getDefaultFilePermissions());
+        $this->assertSame('UTF-8', QueryParser::getDefaultEncoding());
 
         $index2 = $this->luceneManager->getIndex('identifier2');
 
@@ -176,6 +182,7 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(LuceneManager::DEFAULT_MAX_MERGE_DOCS, $index2->getMaxMergeDocs());
         $this->assertSame(LuceneManager::DEFAULT_MERGE_FACTOR, $index2->getMergeFactor());
         $this->assertSame(LuceneManager::DEFAULT_PERMISSIONS, ZfFilesystem::getDefaultFilePermissions());
+        $this->assertSame(LuceneManager::DEFAULT_QUERY_PARSER_ENCODING, QueryParser::getDefaultEncoding());
     }
 
     /**
