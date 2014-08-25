@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 1.0.3 (????-??-??)
+
+ * 54da2ba - Add query parser encoding support
+
 ### 1.0.2 (2014-08-12)
 
  * f16a5f1 - [Travis] Improve build matrix
