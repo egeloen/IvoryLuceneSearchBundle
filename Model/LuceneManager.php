@@ -159,15 +159,15 @@ class LuceneManager
     /**
      * Sets a lucene index.
      *
-     * @param string  $identifier            The lucene identifier.
-     * @param string  $path                  The lucene path.
-     * @param string  $analyzer              The lucene analyzer class name.
-     * @param integer $maxBufferedDocs       The lucene max buffered docs.
-     * @param integer $maxMergeDocs          The lucene max merge docs.
-     * @param integer $mergeFactor           The lucene merge factor.
-     * @param integer $permissions           The lucene permissions.
-     * @param boolean $autoOptimized         The lucene auto optimized.
-     * @param string  $queryParserEncoding   The lucene query parser encoding.
+     * @param string  $identifier          The lucene identifier.
+     * @param string  $path                The lucene path.
+     * @param string  $analyzer            The lucene analyzer class name.
+     * @param integer $maxBufferedDocs     The lucene max buffered docs.
+     * @param integer $maxMergeDocs        The lucene max merge docs.
+     * @param integer $mergeFactor         The lucene merge factor.
+     * @param integer $permissions         The lucene permissions.
+     * @param boolean $autoOptimized       The lucene auto optimized.
+     * @param string  $queryParserEncoding The lucene query parser encoding.
      */
     public function setIndex(
         $identifier,
