@@ -52,6 +52,10 @@ ivory_lucene_search:
         # If this flag is true, each time you request an index, it will be optmized
         # See http://framework.zend.com/manual/en/zend.search.lucene.index-creation.html#zend.search.lucene.index-creation.optimization
         auto_optimized: false
+
+        # Query parser encoding (Optional)
+        # See http://framework.zend.com/manual/en/zend.search.lucene.searching.html#zend.search.lucene.searching.query_building.parsing
+        query_parser_encoding: "UTF-8" # (default: "")
 ```
 
 ### By coding
@@ -65,13 +69,14 @@ $indexes = array(
         'path' => '/path/to/store/lucene/index1'
     ),
     'identifier2' => array(
-        'path'              => '/path/to/store/lucene/index2',
-        'analyzer'          => 'ZendSearch\Lucene\Analysis\Analyzer\Common\Text\CaseInsensitive',
-        'max_buffered_docs' => 10,
-        'max_merge_docs'    => PHP_INT_MAX,
-        'merge_factor'      => 10,
-        'permissions'       => 0777,
-        'auto_optimized'    => true
+        'path'                  => '/path/to/store/lucene/index2',
+        'analyzer'              => 'ZendSearch\Lucene\Analysis\Analyzer\Common\Text\CaseInsensitive',
+        'max_buffered_docs'     => 10,
+        'max_merge_docs'        => PHP_INT_MAX,
+        'merge_factor'          => 10,
+        'permissions'           => 0777,
+        'auto_optimized'        => true,
+        'query_parser_encoding' => 'UTF-8',
     )
 );
 
@@ -92,7 +97,8 @@ $luceneSearch->setIndex(
     PHP_INT_MAX,
     10,
     0777,
-    false
+    false,
+    'UTF-8'
 );
 ```
 
