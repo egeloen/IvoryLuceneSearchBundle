@@ -15,8 +15,13 @@ lucene indexes retaining the usual operation of lucene. Some advanced configurat
 
 ## Documentation
 
-  1. [Installation](http://github.com/egeloen/IvoryLuceneSearchBundle/blob/master/Resources/doc/installation.md)
-  2. [Usage](http://github.com/egeloen/IvoryLuceneSearchBundle/blob/master/Resources/doc/usage.md)
+  1. [Installation](/Resources/doc/installation.md)
+  2. [Usage](/Resources/doc/usage.md)
+
+## Testing
+
+The bundle is fully unit tested by [PHPUnit](http://www.phpunit.de/) with a code coverage close to **100%**. To
+execute the test suite, check the travis [configuration](/.travis.yml).
 
 ## Contribute
 
@@ -25,5 +30,4 @@ We love contributors! Ivory is an open source project. If you'd like to contribu
 ## License
 
 The Ivory Lucene Search Bundle is under the MIT license. For the full copyright and license information, please read
-the [LICENSE](https://github.com/egeloen/IvoryLuceneSearchBundle/blob/master/LICENSE) file that was distributed with
-this source code.
+the [LICENSE](/LICENSE) file that was distributed with this source code.
