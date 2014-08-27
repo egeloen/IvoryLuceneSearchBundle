@@ -2,6 +2,9 @@
 
 ### 1.0.3 (????-??-??)
 
+ * f60065d - [Doc] Add query parser encoding
+ * 2d943d1 - [README] Rely on relative link
+ * e9174d1 - Add contributing doc
  * 54da2ba - Add query parser encoding support
 
 ### 1.0.2 (2014-08-12)
