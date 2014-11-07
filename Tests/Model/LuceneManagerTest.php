@@ -25,10 +25,10 @@ use ZendSearch\Lucene\Search\QueryParser;
 class LuceneManagerTest extends \PHPUnit_Framework_TestCase
 {
     /** @var array */
-    protected $paths;
+    private $paths;
 
     /** @var \Ivory\LuceneSearchBundle\Model\LuceneManager */
-    protected $luceneManager;
+    private $luceneManager;
 
     /**
      * {@inheritdoc}

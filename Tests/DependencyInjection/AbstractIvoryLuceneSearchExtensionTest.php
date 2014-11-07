@@ -27,7 +27,7 @@ use ZendSearch\Lucene\Search\QueryParser;
 abstract class AbstractIvoryLuceneSearchExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Symfony\Component\DependencyInjection\ContainerBuilder */
-    protected $container;
+    private $container;
 
     /**
      * {@inheritdoc}

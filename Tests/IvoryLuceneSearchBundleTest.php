@@ -21,7 +21,7 @@ use Ivory\LuceneSearchBundle\IvoryLuceneSearchBundle;
 class IvoryLuceneSearchBundleTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Ivory\LuceneSearchBundle\IvoryLuceneSearchBundle*/
-    protected $bundle;
+    private $bundle;
 
     /**
      * {@inheritdoc}

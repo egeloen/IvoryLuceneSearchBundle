@@ -46,10 +46,10 @@ class LuceneManager
     const DEFAULT_QUERY_PARSER_ENCODING = '';
 
     /** @var array */
-    protected $indexes = array();
+    private $indexes = array();
 
     /** @var array */
-    protected $configs = array();
+    private $configs = array();
 
     /**
      * Checks if the lucene manager has indexes.
@@ -233,7 +233,7 @@ class LuceneManager
      *
      * @return array The config.
      */
-    protected function getConfig($identifier)
+    private function getConfig($identifier)
     {
         if (!isset($this->configs[$identifier])) {
             throw new \InvalidArgumentException(sprintf('The lucene index "%s" does not exist.', $identifier));
@@ -249,7 +249,7 @@ class LuceneManager
      *
      * @return boolean TRUE if the lucene index path exists else FALSE.
      */
-    protected function checkPath($path)
+    private function checkPath($path)
     {
         return file_exists($path) && is_readable($path) && ($resources = scandir($path)) && (count($resources) > 2);
     }
