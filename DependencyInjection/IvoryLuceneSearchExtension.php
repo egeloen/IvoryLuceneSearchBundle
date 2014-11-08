@@ -35,23 +35,10 @@ class IvoryLuceneSearchExtension extends Extension
             $loader->load($resource.'.xml');
         }
 
-        $this->loadIndexes($config, $container);
-    }
-
-    /**
-     * Loads indexees configuration
-     *
-     * @param array                                                   $config    The configuration.
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container The container.
-     */
-    protected function loadIndexes(array $config, ContainerBuilder $container)
-    {
-        if (empty($config)) {
-            return;
+        if (!empty($config)) {
+            $container
+                ->getDefinition('ivory_lucene_search')
+                ->addMethodCall('setIndexes', array($config));
         }
-
-        $container
-            ->getDefinition('ivory_lucene_search')
-            ->addMethodCall('setIndexes', array($config));
     }
 }
