@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 2.0.0 (????-??-??)
+
+ * 25bc9e8 - [Encapsulation] Move everything from protected to private (except for entry point)
+
 ### 1.0.3 (2014-11-08)
 
  * f60065d - [Doc] Add query parser encoding
