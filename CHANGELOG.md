@@ -1,6 +1,6 @@
 # CHANGELOG
 
-### 1.0.3 (????-??-??)
+### 1.0.3 (2014-11-08)
 
  * f60065d - [Doc] Add query parser encoding
  * 2d943d1 - [README] Rely on relative link
