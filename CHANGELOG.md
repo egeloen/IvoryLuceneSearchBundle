@@ -2,6 +2,7 @@
 
 ### 2.0.0 (????-??-??)
 
+ * bf2cf08 - [Test] Remove bootstrap.php + Simplify PHPUnit configuration
  * 25bc9e8 - [Encapsulation] Move everything from protected to private (except for entry point)
 
 ### 1.0.3 (2014-11-08)
