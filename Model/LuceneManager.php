@@ -188,7 +188,7 @@ class LuceneManager
             'merge_factor'          => $mergeFactor,
             'permissions'           => $permissions,
             'auto_optimized'        => $autoOptimized,
-            'query_parser_encoding' => $queryParserEncoding
+            'query_parser_encoding' => $queryParserEncoding,
         );
     }
 

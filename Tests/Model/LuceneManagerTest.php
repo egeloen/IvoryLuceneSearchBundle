@@ -159,7 +159,7 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
             ),
             'identifier2' => array(
                 'path' => $this->paths[1],
-            )
+            ),
         ));
 
         $index1 = $this->luceneManager->getIndex('identifier1');

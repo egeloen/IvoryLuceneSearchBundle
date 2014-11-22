@@ -20,5 +20,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class IvoryLuceneSearchBundle extends Bundle
 {
-
 }

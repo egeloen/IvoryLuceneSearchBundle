@@ -86,7 +86,7 @@ abstract class AbstractIvoryLuceneSearchExtensionTest extends \PHPUnit_Framework
                     'permissions'           => 0666,
                     'query_parser_encoding' => 'UTF-8',
                 ),
-            )
+            ),
         );
     }
 

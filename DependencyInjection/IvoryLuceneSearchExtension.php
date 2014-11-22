@@ -31,7 +31,7 @@ class IvoryLuceneSearchExtension extends Extension
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        foreach(array('services') as $resource) {
+        foreach (array('services') as $resource) {
             $loader->load($resource.'.xml');
         }
 
