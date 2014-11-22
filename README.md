@@ -1,6 +1,6 @@
 # README
 
-[![Build Status](https://secure.travis-ci.org/egeloen/IvoryLuceneSearchBundle.png)](http://travis-ci.org/egeloen/IvoryLuceneSearchBundle)
+[![Build Status](https://secure.travis-ci.org/egeloen/IvoryLuceneSearchBundle.png?branch=master)](http://travis-ci.org/egeloen/IvoryLuceneSearchBundle)
 [![Coverage Status](https://coveralls.io/repos/egeloen/IvoryLuceneSearchBundle/badge.png?branch=master)](https://coveralls.io/r/egeloen/IvoryLuceneSearchBundle?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/egeloen/IvoryLuceneSearchBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/egeloen/IvoryLuceneSearchBundle/?branch=master)
 [![Dependency Status](https://www.versioneye.com/php/egeloen:lucene-search-bundle/badge.svg)](https://www.versioneye.com/php/egeloen:lucene-search-bundle)
