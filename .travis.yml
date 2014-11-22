@@ -20,6 +20,7 @@ install:
     - composer self-update
     - composer require --no-update symfony/framework-bundle:${SYMFONY_VERSION}
     - composer require --no-update symfony/filesystem:${SYMFONY_VERSION}
+    - if [[ "$SYMFONY_VERSION" = *dev* ]]; then sed -i "s/\"MIT\"/\"MIT\",\"minimum-stability\":\"dev\"/g" composer.json; fi
     - composer install --prefer-source
 
 script: bin/phpunit --coverage-clover clover.xml
