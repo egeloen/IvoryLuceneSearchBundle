@@ -2,6 +2,9 @@
 
 ### 2.0.0 (????-??-??)
 
+ * 0cc206a - [Travis] Update config
+ * 386e93a - Add .gitattributes
+ * c990a02 - [Readme] Fix badge uri
  * 650e250 - [DependencyInjection] Remove *.class parameters
  * bf2cf08 - [Test] Remove bootstrap.php + Simplify PHPUnit configuration
  * 25bc9e8 - [Encapsulation] Move everything from protected to private (except for entry point)
