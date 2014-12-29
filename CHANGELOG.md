@@ -1,6 +1,6 @@
 # CHANGELOG
 
-### 2.0.0 (????-??-??)
+### 2.0.0 (2014-12-29)
 
  * e7d6889 - [Travis] Add composer prefer lowest build
  * 1f18108 - [Travis] Move Symfony 2.6.*@dev to 2.6.*
