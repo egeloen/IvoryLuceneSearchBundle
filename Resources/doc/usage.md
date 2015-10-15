@@ -1,6 +1,6 @@
 # Usage
 
-Before starting, I recommend you to read the lucene's documentation available [here](http://framework.zend.com/manual/en/zend.search.lucene.html).
+Before starting, I recommend you to read the lucene's documentation available [here](http://framework.zend.com/manual/current/en/tutorials/lucene.intro.html).
 
 The bundle allows you to configure & request multiple indexes which are identified by a unique identifier.
 Each index can be configured & manipulated like an original zend lucene index.
