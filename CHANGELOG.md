@@ -1,6 +1,6 @@
 # CHANGELOG
 
-### 2.0.1 (????-??-??)
+### 2.0.1 (2015-12-12)
 
  * e61dbf2 - Make base code compatible with Symfony3
  
