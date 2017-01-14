@@ -20,6 +20,8 @@ env:
         - SYMFONY_VERSION=2.3.*
 
 install:
+    - if [[ "$TRAVIS_PHP_VERSION" == "5.3.3" ]]; then composer config -g secure-http false; fi
+    - if [[ "$TRAVIS_PHP_VERSION" == "5.3.3" ]]; then composer config -g disable-tls true; fi
     - composer self-update
     - composer require --no-update symfony/config:${SYMFONY_VERSION}
     - composer require --no-update symfony/dependency-injection:${SYMFONY_VERSION}
