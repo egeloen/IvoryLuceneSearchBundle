@@ -2,15 +2,27 @@
 
 ## Symfony >= 2.1
 
-Before starting, I inform you the installation with Composer is a little tricky due to missing tags on the
-Zend Lucene Search official repository. Basically, the last tag of the `zendframework/zendsearch` is
-`2.0.0-RC5` which is really old... Then, the following instruction will allow you to install the latest version:
+Before starting, I inform you the installation with Composer is a little tricky due to `zendframework/zendsearch` not 
+stable yet. The last tag is an RC one and since composer uses the stable flag as minimum stability, you need to 
+explicitly configure the Zend search library. The following instruction will allow you to install the latest RC version:
 
 ``` json
 {
     "require": {
-        "egeloen/lucene-search-bundle": "~1.0",
-        "zendframework/zendsearch": "dev-master"
+        "egeloen/lucene-search-bundle": "^2.0",
+        "zendframework/zendsearch": "^2.0@rc"
+    }
+}
+```
+
+If you prefer install the latest development version, you need to use this rewrite rule in order to be compliant 
+with the bundle requirement:
+
+``` json
+{
+    "require": {
+        "egeloen/lucene-search-bundle": "^2.0",
+        "zendframework/zendsearch": "dev-master as 2.0.0-RC5"
     }
 }
 ```
