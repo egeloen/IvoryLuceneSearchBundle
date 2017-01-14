@@ -2,6 +2,7 @@
 
 ### 2.0.2 (????-??-??)
 
+ * 7c54c13 - [Scrutinizer] Fix code coverage configuration
  * 4d0d826 - [Travis] Fix PHP 5.3.3 build
  * c5a23db - [Composer] Update deps
  * 1540516 - [License] Happy new year
