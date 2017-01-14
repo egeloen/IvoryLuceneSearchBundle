@@ -1,5 +1,11 @@
 # CHANGELOG
 
+### 2.0.2 (????-??-??)
+
+ * c5a23db - [Composer] Update deps
+ * 1540516 - [License] Happy new year
+ * bd6dd7f - Remove coveralls
+ 
 ### 2.0.1 (2015-12-12)
 
  * e61dbf2 - Make base code compatible with Symfony3
