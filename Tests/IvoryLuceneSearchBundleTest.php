@@ -14,13 +14,13 @@ namespace Ivory\LuceneSearchBundle\Tests;
 use Ivory\LuceneSearchBundle\IvoryLuceneSearchBundle;
 
 /**
- * Ivory Lucene search bundle test.
- *
  * @author GeLo <geloen.eric@gmail.com>
  */
 class IvoryLuceneSearchBundleTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var \Ivory\LuceneSearchBundle\IvoryLuceneSearchBundle*/
+    /**
+     * @var IvoryLuceneSearchBundle
+     */
     private $bundle;
 
     /**
@@ -29,14 +29,6 @@ class IvoryLuceneSearchBundleTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->bundle = new IvoryLuceneSearchBundle();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown()
-    {
-        unset($this->bundle);
     }
 
     public function testBundle()

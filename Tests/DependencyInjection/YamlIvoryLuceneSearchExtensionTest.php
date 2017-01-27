@@ -16,8 +16,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
- * Yaml Ivory Lucene search extension test.
- *
  * @author GeLo <geloen.eric@gmail.com>
  */
 class YamlIvoryLuceneSearchExtensionTest extends AbstractIvoryLuceneSearchExtensionTest

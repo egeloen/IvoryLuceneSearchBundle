@@ -14,20 +14,22 @@ namespace Ivory\LuceneSearchBundle\Tests\Model;
 use Ivory\LuceneSearchBundle\Model\LuceneManager;
 use Symfony\Component\Filesystem\Filesystem as SfFilesystem;
 use ZendSearch\Lucene\Analysis\Analyzer\Analyzer;
-use ZendSearch\Lucene\Storage\Directory\Filesystem as ZfFilesystem;
 use ZendSearch\Lucene\Search\QueryParser;
+use ZendSearch\Lucene\Storage\Directory\Filesystem as ZfFilesystem;
 
 /**
- * Lucene manager test.
- *
  * @author GeLo <geloen.eric@gmail.com>
  */
 class LuceneManagerTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var array */
+    /**
+     * @var array
+     */
     private $paths;
 
-    /** @var \Ivory\LuceneSearchBundle\Model\LuceneManager */
+    /**
+     * @var LuceneManager
+     */
     private $luceneManager;
 
     /**
@@ -40,15 +42,13 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
             sys_get_temp_dir().'/'.uniqid().'2',
         );
 
-        $this->tearDown(false);
-
         $this->luceneManager = new LuceneManager();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function tearDown($clean = true)
+    protected function tearDown()
     {
         $filesystem = new SfFilesystem();
 
@@ -56,12 +56,6 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
             if (file_exists($path)) {
                 $filesystem->remove($path);
             }
-        }
-
-        unset($this->luceneManager);
-
-        if ($clean) {
-            unset($this->paths);
         }
     }
 

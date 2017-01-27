@@ -16,8 +16,6 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * Ivory lucene search configuration.
- *
  * @author GeLo <geloen.eric@gmail.com>
  */
 class Configuration implements ConfigurationInterface

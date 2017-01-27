@@ -13,48 +13,28 @@ namespace Ivory\LuceneSearchBundle\Model;
 
 use Symfony\Component\Filesystem\Filesystem as SfFilesystem;
 use ZendSearch\Lucene\Analysis\Analyzer\Analyzer;
+use ZendSearch\Lucene\Index;
 use ZendSearch\Lucene\Lucene;
-use ZendSearch\Lucene\Storage\Directory\Filesystem as ZfFilesystem;
 use ZendSearch\Lucene\Search\QueryParser;
+use ZendSearch\Lucene\Storage\Directory\Filesystem as ZfFilesystem;
 
 /**
- * Lucene manager.
- *
  * @author GeLo <geloen.eric@gmail.com>
  */
 class LuceneManager
 {
-    /** @const string */
     const DEFAULT_ANALYZER = 'ZendSearch\Lucene\Analysis\Analyzer\Common\Text\CaseInsensitive';
-
-    /** @const integer */
     const DEFAULT_MAX_BUFFERED_DOCS = 10;
-
-    /** @const integer */
     const DEFAULT_MAX_MERGE_DOCS = PHP_INT_MAX;
-
-    /** @const integer */
     const DEFAULT_MERGE_FACTOR = 10;
-
-    /** @const integer */
     const DEFAULT_PERMISSIONS = 0777;
-
-    /** @const boolean */
     const DEFAULT_AUTO_OPTIMIZED = false;
-
-    /** @const string */
     const DEFAULT_QUERY_PARSER_ENCODING = '';
-
-    /** @var array */
     private $indexes = array();
-
-    /** @var array */
     private $configs = array();
 
     /**
-     * Checks if the lucene manager has indexes.
-     *
-     * @return boolean TRUE if the lucene manager has indexes else FALSE.
+     * @return bool
      */
     public function hasIndexes()
     {
@@ -62,11 +42,9 @@ class LuceneManager
     }
 
     /**
-     * Checks if the index exists for the given lucene identifier.
+     * @param string $identifier
      *
-     * @param string $identifier The lucene identifier.
-     *
-     * @return boolean TRUE if the index exists else FALSE.
+     * @return bool
      */
     public function hasIndex($identifier)
     {
@@ -74,11 +52,9 @@ class LuceneManager
     }
 
     /**
-     * Gets the index mapped by the given lucene identifier.
+     * @param string $identifier
      *
-     * @param string $identifier The lucene identifier.
-     *
-     * @return \ZendSearch\Lucene\Index The lucene index.
+     * @return Index
      */
     public function getIndex($identifier)
     {
@@ -109,31 +85,9 @@ class LuceneManager
     }
 
     /**
-     * Set the lucene indexes.
+     * @param array $indexes
      *
-     * Example:
-     *
-     * array(
-     *     'identifier1' => array(
-     *         'path'                  => '/path/to/lucene/index1',
-     *         'analyzer'              => 'ZendSearch\Lucene\Analysis\Analyzer\Common\Text\CaseInsensitive',
-     *         'max_buffered_docs'     => 10,
-     *         'max_merge_docs'        => PHP_INT_MAX,
-     *         'merge_factor'          => 10,
-     *         'permissions'           => 0777,
-     *         'auto_optimized'        => false,
-     *         'query_parser_encoding' => ''
-     *     ),
-     *     'identifier2' => array(
-     *         'path' => '/path/to/lucene/index2'
-     *     )
-     * )
-     *
-     * The path is required. If you don't pass the other options, the default describes in the example will be used.
-     *
-     * @param array $indexes The lucene indexes.
-     *
-     * @throws \InvalidArgumentException If a lucene index path is not provided.
+     * @throws \InvalidArgumentException
      */
     public function setIndexes(array $indexes)
     {
@@ -157,17 +111,15 @@ class LuceneManager
     }
 
     /**
-     * Sets a lucene index.
-     *
-     * @param string  $identifier          The lucene identifier.
-     * @param string  $path                The lucene path.
-     * @param string  $analyzer            The lucene analyzer class name.
-     * @param integer $maxBufferedDocs     The lucene max buffered docs.
-     * @param integer $maxMergeDocs        The lucene max merge docs.
-     * @param integer $mergeFactor         The lucene merge factor.
-     * @param integer $permissions         The lucene permissions.
-     * @param boolean $autoOptimized       The lucene auto optimized.
-     * @param string  $queryParserEncoding The lucene query parser encoding.
+     * @param string $identifier
+     * @param string $path
+     * @param string $analyzer
+     * @param int    $maxBufferedDocs
+     * @param int    $maxMergeDocs
+     * @param int    $mergeFactor
+     * @param int    $permissions
+     * @param bool   $autoOptimized
+     * @param string $queryParserEncoding
      */
     public function setIndex(
         $identifier,
@@ -193,10 +145,8 @@ class LuceneManager
     }
 
     /**
-     * Removes a lucene index.
-     *
-     * @param string  $identifier      The lucene identifier.
-     * @param boolean $removeDirectory TRUE if the index should be erased else FALSE.
+     * @param string $identifier
+     * @param bool   $removeDirectory
      */
     public function removeIndex($identifier, $removeDirectory = false)
     {
@@ -212,9 +162,7 @@ class LuceneManager
     }
 
     /**
-     * Erases a lucene index.
-     *
-     * @param string $identifier The lucene identifier.
+     * @param string $identifier
      */
     public function eraseIndex($identifier)
     {
@@ -225,13 +173,11 @@ class LuceneManager
     }
 
     /**
-     * Gets the config for the given lucene identifier.
+     * @param string $identifier
      *
-     * @param string $identifier The lucene identifier.
+     * @throws \InvalidArgumentException
      *
-     * @throws \InvalidArgumentException If the lucene index does not exist.
-     *
-     * @return array The config.
+     * @return array
      */
     private function getConfig($identifier)
     {
@@ -243,11 +189,9 @@ class LuceneManager
     }
 
     /**
-     * Checks if a lucene index path exists.
+     * @param string $path
      *
-     * @param string $path The lucene index path.
-     *
-     * @return boolean TRUE if the lucene index path exists else FALSE.
+     * @return bool
      */
     private function checkPath($path)
     {

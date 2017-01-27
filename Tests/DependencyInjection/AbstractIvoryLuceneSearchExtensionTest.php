@@ -16,17 +16,17 @@ use Ivory\LuceneSearchBundle\Model\LuceneManager;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Filesystem\Filesystem as SfFilesystem;
 use ZendSearch\Lucene\Analysis\Analyzer\Analyzer;
-use ZendSearch\Lucene\Storage\Directory\Filesystem as ZfFilesystem;
 use ZendSearch\Lucene\Search\QueryParser;
+use ZendSearch\Lucene\Storage\Directory\Filesystem as ZfFilesystem;
 
 /**
- * Ivory Lucene search extension test.
- *
  * @author GeLo <geloen.eric@gmail.com>
  */
 abstract class AbstractIvoryLuceneSearchExtensionTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var \Symfony\Component\DependencyInjection\ContainerBuilder */
+    /**
+     * @var ContainerBuilder
+     */
     private $container;
 
     /**
@@ -53,14 +53,52 @@ abstract class AbstractIvoryLuceneSearchExtensionTest extends \PHPUnit_Framework
             $filesystem = new SfFilesystem();
             $filesystem->remove($path);
         }
-
-        unset($this->container);
     }
 
     /**
-     * Gets the config provider.
+     * @param ContainerBuilder $container
+     * @param string           $configuration
+     */
+    abstract protected function loadConfiguration(ContainerBuilder $container, $configuration);
+
+    public function testManagerWithoutConfiguration()
+    {
+        $this->container->compile();
+
+        $luceneManager = $this->container->get('ivory_lucene_search');
+
+        $this->assertInstanceOf('Ivory\LuceneSearchBundle\Model\LuceneManager', $luceneManager);
+        $this->assertFalse($luceneManager->hasIndexes());
+    }
+
+    /**
+     * @param string $name
+     * @param array  $config
      *
-     * @return array The config provider.
+     * @dataProvider configProvider
+     */
+    public function testManagerWithConfiguration($name, array $config)
+    {
+        $this->loadConfiguration($this->container, $name);
+        $this->container->compile();
+
+        $luceneManager = $this->container->get('ivory_lucene_search');
+
+        $this->assertInstanceOf('Ivory\LuceneSearchBundle\Model\LuceneManager', $luceneManager);
+        $this->assertTrue($luceneManager->hasIndexes());
+
+        $index = $luceneManager->getIndex('identifier');
+
+        $this->assertInstanceOf($config['analyzer'], Analyzer::getDefault());
+        $this->assertSame($config['max_buffered_docs'], $index->getMaxBufferedDocs());
+        $this->assertSame($config['max_merge_docs'], $index->getMaxMergeDocs());
+        $this->assertSame($config['merge_factor'], $index->getMergeFactor());
+        $this->assertSame($config['permissions'], ZfFilesystem::getDefaultFilePermissions());
+        $this->assertSame($config['query_parser_encoding'], QueryParser::getDefaultEncoding());
+    }
+
+    /**
+     * @return array
      */
     public function configProvider()
     {
@@ -88,46 +126,5 @@ abstract class AbstractIvoryLuceneSearchExtensionTest extends \PHPUnit_Framework
                 ),
             ),
         );
-    }
-
-    /**
-     * Loads a configuration.
-     *
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container     The container.
-     * @param string                                                  $configuration The configuration.
-     */
-    abstract protected function loadConfiguration(ContainerBuilder $container, $configuration);
-
-    public function testManagerWithoutConfiguration()
-    {
-        $this->container->compile();
-
-        $luceneManager = $this->container->get('ivory_lucene_search');
-
-        $this->assertInstanceOf('Ivory\LuceneSearchBundle\Model\LuceneManager', $luceneManager);
-        $this->assertFalse($luceneManager->hasIndexes());
-    }
-
-    /**
-     * @dataProvider configProvider
-     */
-    public function testManagerWithConfiguration($name, array $config)
-    {
-        $this->loadConfiguration($this->container, $name);
-        $this->container->compile();
-
-        $luceneManager = $this->container->get('ivory_lucene_search');
-
-        $this->assertInstanceOf('Ivory\LuceneSearchBundle\Model\LuceneManager', $luceneManager);
-        $this->assertTrue($luceneManager->hasIndexes());
-
-        $index = $luceneManager->getIndex('identifier');
-
-        $this->assertInstanceOf($config['analyzer'], Analyzer::getDefault());
-        $this->assertSame($config['max_buffered_docs'], $index->getMaxBufferedDocs());
-        $this->assertSame($config['max_merge_docs'], $index->getMaxMergeDocs());
-        $this->assertSame($config['merge_factor'], $index->getMergeFactor());
-        $this->assertSame($config['permissions'], ZfFilesystem::getDefaultFilePermissions());
-        $this->assertSame($config['query_parser_encoding'], QueryParser::getDefaultEncoding());
     }
 }

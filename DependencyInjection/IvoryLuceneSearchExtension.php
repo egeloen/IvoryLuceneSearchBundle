@@ -17,8 +17,6 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * Ivory lucene search extension.
- *
  * @author GeLo <geloen.eric@gmail.com>
  */
 class IvoryLuceneSearchExtension extends Extension
