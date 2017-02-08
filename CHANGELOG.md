@@ -2,6 +2,8 @@
 
 ### 2.0.2 (????-??-??)
 
+ * d0d0ab1 - [Docker] Add HHVM container
+ * cb54fa9 - Add docker support
  * 6fbbcfd - Add PHP-CS-Fixer support
  * 45ccbed - [Doc] Fix installation instructions
  * 7c54c13 - [Scrutinizer] Fix code coverage configuration
