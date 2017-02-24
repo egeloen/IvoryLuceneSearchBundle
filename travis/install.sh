@@ -4,7 +4,7 @@ set -e
 
 COMPOSER_PREFER_LOWEST=${COMPOSER_PREFER_LOWEST-false}
 DOCKER_BUILD=${DOCKER_BUILD-false}
-SYMFONY_VERSION=${SYMFONY_VERSION-2.3.*}
+SYMFONY_VERSION=${SYMFONY_VERSION-2.7.*}
 TRAVIS_PHP_VERSION=${TRAVIS_PHP_VERSION-5.6}
 
 if [ "$DOCKER_BUILD" = true ]; then
@@ -16,17 +16,11 @@ if [ "$DOCKER_BUILD" = true ]; then
     exit
 fi
 
-if [ "$TRAVIS_PHP_VERSION" = "5.3.3" ]; then
-    composer config -g secure-http false
-    composer config -g disable-tls true
-fi
-
 composer self-update
 
 composer require --no-update symfony/config:${SYMFONY_VERSION}
 composer require --no-update symfony/dependency-injection:${SYMFONY_VERSION}
 composer require --no-update symfony/framework-bundle:${SYMFONY_VERSION}
-composer require --no-update symfony/filesystem:${SYMFONY_VERSION}
 composer require --no-update --dev symfony/yaml:${SYMFONY_VERSION}
 
 composer remove --no-update --dev friendsofphp/php-cs-fixer

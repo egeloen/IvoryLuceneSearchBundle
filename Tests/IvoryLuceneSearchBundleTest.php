@@ -12,6 +12,7 @@
 namespace Ivory\LuceneSearchBundle\Tests;
 
 use Ivory\LuceneSearchBundle\IvoryLuceneSearchBundle;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * @author GeLo <geloen.eric@gmail.com>
@@ -33,6 +34,6 @@ class IvoryLuceneSearchBundleTest extends \PHPUnit_Framework_TestCase
 
     public function testBundle()
     {
-        $this->assertInstanceOf('Symfony\Component\HttpKernel\Bundle\Bundle', $this->bundle);
+        $this->assertInstanceOf(Bundle::class, $this->bundle);
     }
 }
