@@ -29,14 +29,14 @@ class IvoryLuceneSearchExtension extends Extension
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        foreach (array('services') as $resource) {
+        foreach (['services'] as $resource) {
             $loader->load($resource.'.xml');
         }
 
         if (!empty($config)) {
             $container
                 ->getDefinition('ivory_lucene_search')
-                ->addMethodCall('setIndexes', array($config));
+                ->addMethodCall('setIndexes', [$config]);
         }
     }
 }

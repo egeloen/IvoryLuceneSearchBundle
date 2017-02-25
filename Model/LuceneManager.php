@@ -11,27 +11,35 @@
 
 namespace Ivory\LuceneSearchBundle\Model;
 
-use Symfony\Component\Filesystem\Filesystem as SfFilesystem;
 use ZendSearch\Lucene\Analysis\Analyzer\Analyzer;
+use ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive;
 use ZendSearch\Lucene\Index;
 use ZendSearch\Lucene\Lucene;
 use ZendSearch\Lucene\Search\QueryParser;
-use ZendSearch\Lucene\Storage\Directory\Filesystem as ZfFilesystem;
+use ZendSearch\Lucene\Storage\Directory\Filesystem;
 
 /**
  * @author GeLo <geloen.eric@gmail.com>
  */
 class LuceneManager
 {
-    const DEFAULT_ANALYZER = 'ZendSearch\Lucene\Analysis\Analyzer\Common\Text\CaseInsensitive';
+    const DEFAULT_ANALYZER = CaseInsensitive::class;
     const DEFAULT_MAX_BUFFERED_DOCS = 10;
     const DEFAULT_MAX_MERGE_DOCS = PHP_INT_MAX;
     const DEFAULT_MERGE_FACTOR = 10;
     const DEFAULT_PERMISSIONS = 0777;
     const DEFAULT_AUTO_OPTIMIZED = false;
     const DEFAULT_QUERY_PARSER_ENCODING = '';
-    private $indexes = array();
-    private $configs = array();
+
+    /**
+     * @var Index[]
+     */
+    private $indexes = [];
+
+    /**
+     * @var array
+     */
+    private $configs = [];
 
     /**
      * @return bool
@@ -39,6 +47,14 @@ class LuceneManager
     public function hasIndexes()
     {
         return !empty($this->configs);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getIndexes()
+    {
+        return array_keys($this->configs);
     }
 
     /**
@@ -61,25 +77,23 @@ class LuceneManager
         $config = $this->getConfig($identifier);
         $path = $config['path'];
 
+        Filesystem::setDefaultFilePermissions($config['permissions']);
+        QueryParser::setDefaultEncoding($config['query_parser_encoding']);
+        Analyzer::setDefault(new $config['analyzer']());
+
         if (!$this->checkPath($path)) {
             $this->indexes[$identifier] = Lucene::create($path);
         } else {
             $this->indexes[$identifier] = Lucene::open($path);
         }
 
-        Analyzer::setDefault(new $config['analyzer']());
-
         $this->indexes[$identifier]->setMaxBufferedDocs($config['max_buffered_docs']);
         $this->indexes[$identifier]->setMaxMergeDocs($config['max_merge_docs']);
         $this->indexes[$identifier]->setMergeFactor($config['merge_factor']);
 
-        ZfFilesystem::setDefaultFilePermissions($config['permissions']);
-
         if ($config['auto_optimized']) {
             $this->indexes[$identifier]->optimize();
         }
-
-        QueryParser::setDefaultEncoding($config['query_parser_encoding']);
 
         return $this->indexes[$identifier];
     }
@@ -132,7 +146,7 @@ class LuceneManager
         $autoOptimized = self::DEFAULT_AUTO_OPTIMIZED,
         $queryParserEncoding = self::DEFAULT_QUERY_PARSER_ENCODING
     ) {
-        $this->configs[$identifier] = array(
+        $this->configs[$identifier] = [
             'path'                  => $path,
             'analyzer'              => $analyzer,
             'max_buffered_docs'     => $maxBufferedDocs,
@@ -141,7 +155,7 @@ class LuceneManager
             'permissions'           => $permissions,
             'auto_optimized'        => $autoOptimized,
             'query_parser_encoding' => $queryParserEncoding,
-        );
+        ];
     }
 
     /**
@@ -154,11 +168,8 @@ class LuceneManager
             $this->eraseIndex($identifier);
         }
 
+        unset($this->indexes[$identifier]);
         unset($this->configs[$identifier]);
-
-        if (isset($this->indexes[$identifier])) {
-            unset($this->indexes[$identifier]);
-        }
     }
 
     /**
@@ -166,10 +177,22 @@ class LuceneManager
      */
     public function eraseIndex($identifier)
     {
+        $directory = $this->getIndex($identifier)->getDirectory();
+        unset($this->indexes[$identifier]);
+
+        if (!$directory instanceof Filesystem) {
+            return;
+        }
+
+        foreach ($directory->fileList() as $file) {
+            $directory->deleteFile($file);
+        }
+
         $config = $this->getConfig($identifier);
 
-        $filesystem = new SfFilesystem();
-        $filesystem->remove($config['path']);
+        if (is_dir($config['path'])) {
+            rmdir($config['path']);
+        }
     }
 
     /**

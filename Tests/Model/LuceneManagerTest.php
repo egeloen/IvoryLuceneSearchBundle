@@ -12,10 +12,11 @@
 namespace Ivory\LuceneSearchBundle\Tests\Model;
 
 use Ivory\LuceneSearchBundle\Model\LuceneManager;
-use Symfony\Component\Filesystem\Filesystem as SfFilesystem;
 use ZendSearch\Lucene\Analysis\Analyzer\Analyzer;
+use ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive;
+use ZendSearch\Lucene\Index;
 use ZendSearch\Lucene\Search\QueryParser;
-use ZendSearch\Lucene\Storage\Directory\Filesystem as ZfFilesystem;
+use ZendSearch\Lucene\Storage\Directory\Filesystem;
 
 /**
  * @author GeLo <geloen.eric@gmail.com>
@@ -37,10 +38,10 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->paths = array(
+        $this->paths = [
             sys_get_temp_dir().'/'.uniqid().'1',
             sys_get_temp_dir().'/'.uniqid().'2',
-        );
+        ];
 
         $this->luceneManager = new LuceneManager();
     }
@@ -50,18 +51,14 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        $filesystem = new SfFilesystem();
-
-        foreach ($this->paths as $path) {
-            if (file_exists($path)) {
-                $filesystem->remove($path);
-            }
+        foreach ($this->luceneManager->getIndexes() as $index) {
+            $this->luceneManager->eraseIndex($index);
         }
     }
 
     public function testHasIndexWithIndex()
     {
-        $this->luceneManager->setIndex('identifier', '/path/to/lucene/index');
+        $this->luceneManager->setIndex('identifier', $this->paths[0]);
         $this->assertTrue($this->luceneManager->hasIndex('identifier'));
     }
 
@@ -74,7 +71,7 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->luceneManager->setIndex('identifier', $this->paths[0]);
 
-        $this->assertInstanceOf('ZendSearch\Lucene\Index', $this->luceneManager->getIndex('identifier'));
+        $this->assertInstanceOf(Index::class, $this->luceneManager->getIndex('identifier'));
         $this->assertTrue(file_exists($this->paths[0]));
     }
 
@@ -92,7 +89,7 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
         $this->luceneManager->setIndex(
             'identifier',
             $this->paths[0],
-            'ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive',
+            CaseInsensitive::class,
             100,
             1000000,
             5,
@@ -103,15 +100,11 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
 
         $index = $this->luceneManager->getIndex('identifier');
 
-        $this->assertInstanceOf(
-            'ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive',
-            Analyzer::getDefault()
-        );
-
+        $this->assertInstanceOf(CaseInsensitive::class, Analyzer::getDefault());
         $this->assertSame(100, $index->getMaxBufferedDocs());
         $this->assertSame(1000000, $index->getMaxMergeDocs());
         $this->assertSame(5, $index->getMergeFactor());
-        $this->assertSame(0666, ZfFilesystem::getDefaultFilePermissions());
+        $this->assertSame(0666, Filesystem::getDefaultFilePermissions());
         $this->assertSame('UTF-8', QueryParser::getDefaultEncoding());
     }
 
@@ -140,33 +133,31 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testSetIndexesWithValidValues()
     {
-        $this->luceneManager->setIndexes(array(
-            'identifier1' => array(
+        $this->luceneManager->setIndexes($indexes = [
+            'identifier1' => [
                 'path'                  => $this->paths[0],
-                'analyzer'              => 'ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive',
+                'analyzer'              => CaseInsensitive::class,
                 'max_buffered_docs'     => 100,
                 'max_merge_docs'        => 1000000,
                 'merge_factor'          => 5,
                 'permissions'           => 0666,
                 'auto_optimized'        => true,
                 'query_parser_encoding' => 'UTF-8',
-            ),
-            'identifier2' => array(
+            ],
+            'identifier2' => [
                 'path' => $this->paths[1],
-            ),
-        ));
+            ],
+        ]);
+
+        $this->assertSame(array_keys($indexes), $this->luceneManager->getIndexes());
 
         $index1 = $this->luceneManager->getIndex('identifier1');
 
-        $this->assertInstanceOf(
-            'ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive',
-            Analyzer::getDefault()
-        );
-
+        $this->assertInstanceOf(CaseInsensitive::class, Analyzer::getDefault());
         $this->assertSame(100, $index1->getMaxBufferedDocs());
         $this->assertSame(1000000, $index1->getMaxMergeDocs());
         $this->assertSame(5, $index1->getMergeFactor());
-        $this->assertSame(0666, ZfFilesystem::getDefaultFilePermissions());
+        $this->assertSame(0666, Filesystem::getDefaultFilePermissions());
         $this->assertSame('UTF-8', QueryParser::getDefaultEncoding());
 
         $index2 = $this->luceneManager->getIndex('identifier2');
@@ -175,7 +166,7 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(LuceneManager::DEFAULT_MAX_BUFFERED_DOCS, $index2->getMaxBufferedDocs());
         $this->assertSame(LuceneManager::DEFAULT_MAX_MERGE_DOCS, $index2->getMaxMergeDocs());
         $this->assertSame(LuceneManager::DEFAULT_MERGE_FACTOR, $index2->getMergeFactor());
-        $this->assertSame(LuceneManager::DEFAULT_PERMISSIONS, ZfFilesystem::getDefaultFilePermissions());
+        $this->assertSame(LuceneManager::DEFAULT_PERMISSIONS, Filesystem::getDefaultFilePermissions());
         $this->assertSame(LuceneManager::DEFAULT_QUERY_PARSER_ENCODING, QueryParser::getDefaultEncoding());
     }
 
@@ -185,8 +176,6 @@ class LuceneManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetIndexesWithInvalidValues()
     {
-        $this->luceneManager->setIndexes(array(
-            'identifier' => array(),
-        ));
+        $this->luceneManager->setIndexes(['identifier' => []]);
     }
 }
