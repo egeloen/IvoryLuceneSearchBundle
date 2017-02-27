@@ -1,6 +1,6 @@
 # CHANGELOG
 
-### 3.0.0 (????-??-??)
+### 3.0.0 (2017-02-27)
 
  * b09ab52 - [UPGRADE] Notify about PHP and Symfony bump
  * 8119b64 - [Travis] Fix scripts according to last changes
